@@ -1,33 +1,32 @@
-// import { db } from '../config/mysql';
-const db = require('../config/mysql');
-const userModel = require('../Model/user');
-// import { userModel } from './../model/userModel.js';
-// const conn = db.init();
+const userService = require("../Service/UserService");
 
- function logout() {
-
+module.exports.login = async function (req, res) {
+    return res.status(200).send(await userService.login(req));
 }
 
- function login() {
+module.exports.logout = function (req, res) {}
 
+module.exports.signup = async function (req, res) {
+    const id = await userService.signup(req);
+    res.status(201).end()
 }
 
- function signup() {
-
+module.exports.signout = async function (req, res) {
+    const id = await userService.signout(req);
+    res.status(200).end();
 }
 
- function updateNickname() {
-
+module.exports.updateNickname = async function (req, res) {
+    const id = await userService.updateNickname(req);
+    res.status(200).end();
 }
 
- function updatePassword() {
-
+module.exports.updatePassword = async function (req, res) {
+    const id = await userService.updatePassword(req);
+    res.status(200).end();
 }
 
- function signout() {
-
-}
-
+module.exports = this;
 
 
 
@@ -67,22 +66,5 @@ const userModel = require('../Model/user');
 // };
 //
 //
-// function executeQuery(sql, params, res, callback) {
-//     conn.getConnection((err, connection) => {
-//         if (err) {
-//             console.error('Connection error!!! \n', err);
-//             return res.status(500).json({ error: 'Database connection error' });
-//         }
-//
-//         connection.query(sql, params, (err, results) => {
-//             connection.release(); // 쿼리 완료 후 연결 해제
-//
-//             if (err) {
-//                 console.error('Query error !!! \n', err);
-//                 return res.status(500).json({ error: 'Database query error' });
-//             }
-//
-//             callback(results);
-//         });
-//     });
+
 // }
