@@ -5,6 +5,7 @@ const userController = require('./../Controller/UserController.js');
 userRoute.post('/auth/login', userController.login);
 userRoute.post('/auth/logout', userController.logout);
 userRoute.post('/users/signup', userController.signup);
+userRoute.get('/users/:email/nickname', userController.getNickname);
 userRoute.patch('/users/nickname', userController.updateNickname);
 userRoute.patch('/users/password', userController.updatePassword);
 userRoute.delete('/users/', userController.signout);

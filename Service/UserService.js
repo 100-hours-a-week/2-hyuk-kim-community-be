@@ -1,6 +1,7 @@
 const User = require('../Model/user');
 
 module.exports.login = async (req) => {
+    console.log(req.body);
     return User.login(req.body.email, req.body.password);
 }
 
@@ -12,6 +13,10 @@ module.exports.signup = async (req) => {
 
 module.exports.signout = async (req) => {
     return User.signout(req.body.email);
+}
+
+module.exports.getNickname = async (req) => {
+    return User.getNickname(req.params.email);
 }
 
 module.exports.updateNickname = async (req) => {
