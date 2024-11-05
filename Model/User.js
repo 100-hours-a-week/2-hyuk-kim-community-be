@@ -48,6 +48,22 @@ const User = {
         return 1;
     },
 
+    async addUserInfo(board) {
+        const userList = (await fileSystem.readFile(filePath, 'utf8'));
+
+        const userEmail = board.email;
+        const userNickname = userList[userEmail]?.nickname;
+
+        if (userNickname) board.nickname = userNickname;
+
+        for (const commentKey in board.comment) {
+            const commentEmail = board.comment[commentKey].email;
+            const commentNickname = userList[commentEmail]?.nickname;
+            if (commentNickname) board.comment[commentKey].nickname = commentNickname;
+
+            return board;
+        }
+    }
 };
 
 

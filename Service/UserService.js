@@ -27,4 +27,6 @@ module.exports.updatePassword = async (req) => {
     return User.updatePassword(req.body.email, req.body.password);
 }
 
-
+module.exports.addUserInfo = async (board) => {
+    return User.addUserInfo(board);
+}

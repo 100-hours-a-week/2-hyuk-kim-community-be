@@ -10,7 +10,13 @@ module.exports.createPost = async (req, res) => {
 }
 
 module.exports.getPostByPostId = async (req, res) => {
-    return res.status(200).json(await boardService.getPostByPostId(req));
+    const board = await boardService.getPostByPostId(req);
+    const result = await userService.addUserInfo(board);
+    return res.status(200).json(result);
+}
+
+module.exports.patchPostViews = async (req, res) => {
+    return res.status(200).json(await boardService.patchPostViews(req));
 }
 
 module.exports.updatePostByPostId = async (req, res) => {
