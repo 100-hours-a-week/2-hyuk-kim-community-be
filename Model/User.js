@@ -60,9 +60,10 @@ const User = {
             const commentEmail = board.comment[commentKey].email;
             const commentNickname = userList[commentEmail]?.nickname;
             if (commentNickname) board.comment[commentKey].nickname = commentNickname;
-
-            return board;
+            // console.log("board : " + board);
+            // return board;
         }
+        return board;
     }
 };
 
