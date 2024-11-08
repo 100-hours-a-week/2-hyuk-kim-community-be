@@ -1,16 +1,22 @@
-const express = require('express');
+const express = require("express");
 const boardRoute = express.Router();
-const boardController = require('./../Controller/BoardController.js');
+const boardController = require("./../Controller/BoardController.js");
 
-boardRoute.get('/posts', boardController.getPostList);
-boardRoute.post('/posts', boardController.createPost);
-boardRoute.get('/posts/:postId', boardController.getPostByPostId);
-boardRoute.get('/posts/:postId/edit', boardController.getPostEditByPostId);
-boardRoute.patch('/posts/:postId', boardController.updatePostByPostId);
-boardRoute.delete('/posts/:postId', boardController.deletePostByPostId);
+boardRoute.get("/posts", boardController.getPostList);
+boardRoute.post("/posts", boardController.createPost);
+boardRoute.get("/posts/:postId", boardController.getPostByPostId);
+boardRoute.get("/posts/:postId/edit", boardController.getPostEditByPostId);
+boardRoute.patch("/posts/:postId", boardController.updatePostByPostId);
+boardRoute.delete("/posts/:postId", boardController.deletePostByPostId);
 
-boardRoute.post('/comments', boardController.createComment);
-boardRoute.put('/comments/:commentId', boardController.updateCommentByCommentId);
-boardRoute.delete('/comments/:commentId', boardController.deleteCommentByCommentId);
+boardRoute.post("/comments", boardController.createComment);
+boardRoute.put(
+  "/comments/:commentId",
+  boardController.updateCommentByCommentId,
+);
+boardRoute.delete(
+  "/comments/:commentId",
+  boardController.deleteCommentByCommentId,
+);
 
 module.exports = boardRoute;
