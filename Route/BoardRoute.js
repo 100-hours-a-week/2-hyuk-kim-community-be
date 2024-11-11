@@ -10,7 +10,13 @@ boardRoute.patch("/posts/:postId", boardController.updatePostByPostId);
 boardRoute.delete("/posts/:postId", boardController.deletePostByPostId);
 
 boardRoute.post("/comments", boardController.createComment);
-boardRoute.put("/comments/:commentId", boardController.updateCommentByCommentId);
-boardRoute.delete("/comments/:commentId", boardController.deleteCommentByCommentId);
+boardRoute.put(
+  "/comments/:commentId",
+  boardController.updateCommentByCommentId,
+);
+boardRoute.delete(
+  "/comments/:commentId",
+  boardController.deleteCommentByCommentId,
+);
 
 module.exports = boardRoute;
