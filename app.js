@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const errorMiddleware = require("./middlewares/ErrorMiddleware");
 const app = express();
 const userRouter = require("./Route/UserRoute");
 const boardRouter = require("./Route/BoardRoute");
@@ -17,6 +18,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// app.use(errorMiddleware);
 
 app.use("/api", userRouter);
 app.use("/api", boardRouter);
