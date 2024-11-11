@@ -60,8 +60,7 @@ const User = {
 
     const userEmail = board.email;
     const userNickname = userList[userEmail]?.nickname;
-
-    if (userNickname) board.nickname = userNickname;
+    board.nickname = userNickname ? userNickname : "(알 수 없음)";
 
     for (const commentKey in board.comment) {
       const commentEmail = board.comment[commentKey].email;
