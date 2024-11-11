@@ -42,7 +42,7 @@ const User = {
 
   async updatePassword(email, password) {
     const userList = await fileSystem.readFile(filePath);
-    userList[email].nickname = password;
+    userList[email].password = password;
     await fileSystem.saveFile(filePath, userList);
     return 1;
   },
@@ -59,8 +59,6 @@ const User = {
       const commentEmail = board.comment[commentKey].email;
       const commentNickname = userList[commentEmail]?.nickname;
       if (commentNickname) board.comment[commentKey].nickname = commentNickname;
-      // console.log("board : " + board);
-      // return board;
     }
     return board;
   },

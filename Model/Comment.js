@@ -1,6 +1,6 @@
 const fileSystem = require("../config/fileManager");
 const { v4: uuidv4 } = require("uuid");
-const { getCurrentFormattedDate } = require("../util/DateManager");
+const { getCurrentFormattedDate } = require("../utils/DateManager");
 const filePath = "./data/comment.json";
 
 const Comment = {
