@@ -1,5 +1,5 @@
 const fileSystem = require("../config/fileManager");
-const { getCurrentFormattedDate } = require("../util/DateManager");
+const { getCurrentFormattedDate } = require("../utils/DateManager");
 const { v4: uuidv4 } = require("uuid");
 const filePath = "./data/post.json";
 

@@ -1,4 +1,7 @@
 const userService = require("../Service/UserService");
+const apiResponse = require("../utils/apiResponse");
+const userResponseCedes = require("../utils/userResponseCedes");
+
 
 /*
 Token 인증인가 구현 후 로그인, 회원가입 등의 반환값은 모두 id로 고정하기!
@@ -12,8 +15,12 @@ module.exports.login = async function (req, res) {
 module.exports.logout = function (req, res) {};
 
 module.exports.signup = async function (req, res) {
-  const email = await userService.signup(req);
-  res.status(201).json(email);
+  try {
+    const email = await userService.signup(req);
+    res.status(201).json(email);
+  } catch (error) {
+    res.status(409).json({"message": "email already exists"});
+  }
 };
 
 module.exports.signout = async function (req, res) {
