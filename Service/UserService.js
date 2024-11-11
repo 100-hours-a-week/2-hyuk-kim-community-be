@@ -9,12 +9,16 @@ module.exports.login = async (req) => {
 module.exports.logout = async (req) => {};
 
 module.exports.signup = async (req) => {
-  const { email, password, nickname} = req.body;
+  const { email, password, nickname } = req.body;
   if (!email || !password) throw userResponseCodes.BAD_REQUEST.invalidFormat;
-  if (await User.findUserByEmail(email)) throw userResponseCodes.CONFLICT.emailExists;
+  if (await User.findUserByEmail(email))
+    throw userResponseCodes.CONFLICT.emailExists;
 
   data = await User.signup(email, password, nickname);
-  return userResponseCodes.createResponse(userResponseCodes.CREATED.userCreated, data);
+  return userResponseCodes.createResponse(
+    userResponseCodes.CREATED.userCreated,
+    data,
+  );
 };
 
 module.exports.signout = async (req) => {
