@@ -1,55 +1,37 @@
-const ErrorCodes = Object.freeze({
+module.exports = {
     SUCCESS: {
-        code: 200,
-        message: {
-            loginSuccess: "로그인 성공",
-            availableEmail: "사용 가능한 이메일입니다.",
-            userFetched: "사용자 조회에 성공했습니다.",
-            nicknameUpdated: "닉네임 수정 성공",
-            passwordUpdated: "비밀번호가 수정되었습니다.",
-            accountDeleted: "회원 탈퇴가 완료되었습니다.",
-        },
-        data: {}
+        loginSuccess: { code: 200, message: "로그인 성공" },
+        availableEmail: { code: 200, message: "사용 가능한 이메일입니다." },
+        userFetched: { code: 200, message: "사용자 조회에 성공했습니다." },
+        nicknameUpdated: { code: 200, message: "닉네임 수정 성공" },
+        passwordUpdated: { code: 200, message: "비밀번호가 수정되었습니다." },
+        accountDeleted: { code: 200, message: "회원 탈퇴가 완료되었습니다." },
     },
     CREATED: {
-        code: 201,
-        message: {
-            userCreated: "회원가입 성공",
-        },
-        data: {}
+        userCreated: { code: 201, message: "회원가입 성공" },
     },
     BAD_REQUEST: {
-        code: 400,
-        message: {
-            invalidCredentials: "아이디 또는 비밀번호가 일치하지 않습니다.",
-            invalidFormat: "입력 형식이 올바르지 않습니다.",
-            userNotFound: "ID에 해당하는 사용자가 존재하지 않습니다.",
-            emailNotFound: "ID에 해당하는 이메일이 존재하지 않습니다.",
-            invalidUserId: "ID에 해당하는 사용자가 존재하지 않습니다.",
-        },
-        data: {}
+        invalidCredentials: { code: 400, message: "아이디 또는 비밀번호가 일치하지 않습니다." },
+        invalidFormat: { code: 400, message: "입력 형식이 올바르지 않습니다." },
+        userNotFound: { code: 400, message: "ID에 해당하는 사용자가 존재하지 않습니다." },
+        emailNotFound: { code: 400, message: "ID에 해당하는 이메일이 존재하지 않습니다." },
+        invalidUserId: { code: 400, message: "ID에 해당하는 사용자가 존재하지 않습니다." },
     },
     NOT_FOUND: {
-        code: 404,
-        message: {
-            userNotFound: "ID에 해당하는 사용자가 존재하지 않습니다."
-        },
-        data: {}
+        userNotFound: { code: 404, message: "ID에 해당하는 사용자가 존재하지 않습니다." },
     },
     CONFLICT: {
-        code: 409,
-        message: {
-            emailExists: "이미 존재하는 이메일입니다."
-        },
-        data: {}
+        emailExists: { code: 409, message: "이미 존재하는 이메일입니다." },
     },
     SERVER_ERROR: {
-        code: 500,
-        message: {
-            unexpectedError: "서버에서 예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요."
-        },
-        data: {}
+        unexpectedError: { code: 500, message: "서버에서 예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요." },
     },
-});
+};
 
-module.exports = ErrorCodes;
+module.exports.createResponse = (code, data) => {
+    return {
+        code: code.code,
+        message: code.message,
+        data: data
+    }
+}

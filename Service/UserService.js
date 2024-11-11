@@ -1,4 +1,5 @@
 const User = require("../Model/user");
+const userResponseCodes = require("../utils/userResponseCodes");
 
 module.exports.login = async (req) => {
   console.log(req.body);
@@ -8,7 +9,12 @@ module.exports.login = async (req) => {
 module.exports.logout = async (req) => {};
 
 module.exports.signup = async (req) => {
-  return User.signup(req.body.email, req.body.password, req.body.nickname);
+  const { email, password, nickname} = req.body;
+  if (!email || !password) throw userResponseCodes.BAD_REQUEST.invalidFormat;
+  if (await User.findUserByEmail(email)) throw userResponseCodes.CONFLICT.emailExists;
+
+  data = await User.signup(email, password, nickname);
+  return userResponseCodes.createResponse(userResponseCodes.CREATED.userCreated, data);
 };
 
 module.exports.signout = async (req) => {

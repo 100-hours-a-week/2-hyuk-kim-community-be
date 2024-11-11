@@ -1,5 +1,6 @@
-const fileSystem = require("../config/fileManager");
+const fileSystem = require("../utils/fileManager");
 const filePath = "./data/user.json";
+const { v4: uuidv4 } = require("uuid");
 
 const User = {
   // 토큰, 세션이 없으니까 유저 이메일 전달
@@ -16,9 +17,16 @@ const User = {
 
   async signup(email, password, nickname) {
     const userList = await fileSystem.readFile(filePath);
+    // const id = uuidv4();
+    // userList[id] = { email, password, nickname };
     userList[email] = { password, nickname };
     await fileSystem.saveFile(filePath, userList);
     return email;
+  },
+
+  async findUserByEmail(email) {
+    const userList = await fileSystem.readFile(filePath);
+    return !!userList[email];
   },
 
   async signout(email) {

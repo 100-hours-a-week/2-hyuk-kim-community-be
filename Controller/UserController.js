@@ -1,6 +1,5 @@
 const userService = require("../Service/UserService");
 const apiResponse = require("../utils/apiResponse");
-const userResponseCedes = require("../utils/userResponseCedes");
 
 
 /*
@@ -16,10 +15,10 @@ module.exports.logout = function (req, res) {};
 
 module.exports.signup = async function (req, res) {
   try {
-    const email = await userService.signup(req);
-    res.status(201).json(email);
+    const response = await userService.signup(req);
+    apiResponse.success(req, res, response);
   } catch (error) {
-    res.status(409).json({"message": "email already exists"});
+    apiResponse.error(req, res, error);
   }
 };
 

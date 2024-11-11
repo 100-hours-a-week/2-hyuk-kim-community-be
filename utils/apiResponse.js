@@ -1,11 +1,12 @@
-function apiResponse(res, code, message, data = {}) {
-    res.status(code).json({
-        code,
-        message,
-        data
-    });
+const dateManager = require("./dateManager");
 
-    res.json(myError);
-}
+module.exports.success = (req, res, response) => {
+    console.log(`info!! : [${dateManager.getCurrentFormattedDate()}] ${req.method} ${req.originalUrl} - Status: ${response.code}, Message: ${response.message}`);
+    res.status(response.code).json({ message: response.message, data: response.data || {} });
+};
 
-module.exports = apiResponse;
+module.exports.error = (req, res, response) => {
+    console.log(`error!! : [${dateManager.getCurrentFormattedDate()}] ${req.method} ${req.originalUrl} - Status: ${response.code}, Message: ${response.message}`);
+    res.status(response.code).json({ message: response.message });
+};
+
