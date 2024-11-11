@@ -3,7 +3,7 @@ const userService = require("../Service/UserService");
 
 module.exports.getPostList = async (req, res) => {
   const board = await boardService.getPostList(req);
-  const result = await userService.addUserInfo(board);
+  const result = await userService.addUserInfoInList(board);
   console.log("result : " + JSON.stringify(result));
   return res.status(200).json(result);
 };

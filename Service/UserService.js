@@ -40,3 +40,8 @@ module.exports.updatePassword = async (req) => {
 module.exports.addUserInfo = async (board) => {
   return User.addUserInfo(board);
 };
+
+module.exports.addUserInfoInList = async (board) => {
+  await Promise.all(Object.keys(board).map(key => User.addUserInfo(board[key])));
+  return board;
+};
