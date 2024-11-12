@@ -2,8 +2,9 @@ const User = require("../Model/user");
 const userResponseCodes = require("../utils/userResponseCodes");
 
 module.exports.login = async (req) => {
-  console.log(req.body);
-  return User.login(req.body.email, req.body.password);
+  const result = User.login(req.body.email, req.body.password);
+  if (result) { throw userResponseCodes.BAD_REQUEST.invalidCredentials }
+  return userResponseCodes.createResponse(userResponseCodes.CREATED.userCreated, result);
 };
 
 module.exports.logout = async (req) => {};
@@ -11,14 +12,9 @@ module.exports.logout = async (req) => {};
 module.exports.signup = async (req) => {
   const { email, password, nickname } = req.body;
   if (!email || !password) throw userResponseCodes.BAD_REQUEST.invalidFormat;
-  if (await User.findUserByEmail(email))
-    throw userResponseCodes.CONFLICT.emailExists;
-
-  data = await User.signup(email, password, nickname);
-  return userResponseCodes.createResponse(
-    userResponseCodes.CREATED.userCreated,
-    data,
-  );
+  if (await User.findUserByEmail(email)) { throw userResponseCodes.CONFLICT.emailExists; }
+  const data = await User.signup(email, password, nickname);
+  return userResponseCodes.createResponse(userResponseCodes.CREATED.userCreated, data);
 };
 
 module.exports.signout = async (req) => {

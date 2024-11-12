@@ -7,7 +7,12 @@ Token 인증인가 구현 후 로그인, 회원가입 등의 반환값은 모두
  */
 
 module.exports.login = async function (req, res) {
-  return res.status(200).send(await userService.login(req));
+  try {
+    const response = await userService.login(req);
+    apiResponse.success(req, res, response);
+  } catch (error) {
+    apiResponse.error(req, res, error);
+  }
 };
 
 module.exports.logout = function (req, res) {};

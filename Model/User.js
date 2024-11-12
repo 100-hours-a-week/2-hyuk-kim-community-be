@@ -6,11 +6,8 @@ const User = {
   // 토큰, 세션이 없으니까 유저 이메일 전달
   // 이후 DB 연결 및 토큰 완성하면 userId or Token 전달로 변경하기!!
   async login(email, password) {
-    console.log("login !! : " + email);
     const userList = await fileSystem.readFile(filePath);
-    const result = !!(userList[email] && userList[email].password === password);
-    console.log("result : " + result);
-    return result;
+    return !!(userList[email] && userList[email].password === password);
   },
 
   logout(userId) {}, // 이후 토큰, 세션 인증인가시 구현!
