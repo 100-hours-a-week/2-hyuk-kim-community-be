@@ -8,7 +8,7 @@
 - 커뮤니티 프로젝트는 **HTML CSS JS**를 활용하여 커뮤니티 웹 애플리케이션을 구현한 프로젝트입니다.<br>
 - **Airbnb Code Convention**을 기준으로 코드 품질과 일관성을 유지하며 개발하였습니다. <br>
 - 이 프로젝트는 사용자 인증, 게시판, 댓글, 좋아요 기능 등 기본적인 커뮤니티 서비스 구현을 목표로 하고 있습니다.
-</br>
+  </br>
 
 ## 주요 기능
 
@@ -19,15 +19,15 @@
 ## 기술 스택
 
 - **Backend**: Express.js
-- **Database**: MariaDB - ```추후 업데이트 예정```
-- **Authentication**: JWT (JSON Web Token) + Session - ```추후 업데이트 예정```
+- **Database**: MariaDB - `추후 업데이트 예정`
+- **Authentication**: JWT (JSON Web Token) + Session - `추후 업데이트 예정`
 
 ## 프로젝트 실행 방법
 
 ### 필수 환경
 
 - Node.js (최소 버전: 20.x)
-- MariaDB (로컬 서버 설치 또는 클라우드 DB 사용) - ```추후 업데이트 예정```
+- MariaDB (로컬 서버 설치 또는 클라우드 DB 사용) - `추후 업데이트 예정`
   </br> </br>
 
 ### 설치 방법
@@ -57,17 +57,18 @@
  </br>
 
 3. 서버를 시작합니다.
-    ```
-    npm run start
-    ```
+   ```
+   npm run start
+   ```
 
  </br>
 
-4. 브라우저에서 ```http://localhost:3001```을 열어 프로젝트를 확인합니다.
+4. 브라우저에서 `http://localhost:3001`을 열어 프로젝트를 확인합니다.
    </br>
    </br>
 
 ## 코드 스타일
+
 이 프로젝트는 Airbnb Code Convention을 따릅니다. 코드 품질과 일관성을 유지하기 위해 ESLint와 Prettier를 설정하였으며, 코드 리뷰 시 이를 기준으로 확인합니다.</br>
 
 - JavaScript: ES6+ 문법 사용 </br>
