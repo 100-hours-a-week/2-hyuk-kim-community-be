@@ -3,7 +3,7 @@ const userResponseCodes = require("../utils/userResponseCodes");
 
 module.exports.login = async (req) => {
   const result = User.login(req.body.email, req.body.password);
-  if (result) {
+  if (!result) {
     throw userResponseCodes.BAD_REQUEST.invalidCredentials;
   }
   return userResponseCodes.createResponse(
