@@ -3,7 +3,7 @@ const userService = require("../Service/UserService");
 
 module.exports.getPostList = async (req, res) => {
   const board = await boardService.getPostList(req);
-  const result = await userService.addUserInfoInList(board);
+  const result = await userService.setUserInfoInListByEmail(board);
   console.log("result : " + JSON.stringify(result));
   return res.status(200).json(result);
 };
@@ -14,7 +14,7 @@ module.exports.createPost = async (req, res) => {
 
 module.exports.getPostByPostId = async (req, res) => {
   const board = await boardService.getPostByPostId(req);
-  const result = await userService.addUserInfo(board);
+  const result = await userService.setUserInfoByEmail(board);
   console.log("result : " + JSON.stringify(result));
   return res.status(200).json(result);
 };

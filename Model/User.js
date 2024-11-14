@@ -7,7 +7,9 @@ const User = {
   // 이후 DB 연결 및 토큰 완성하면 userId or Token 전달로 변경하기!!
   async login(email, password) {
     const userList = await fileSystem.readFile(filePath);
-    return !!(userList[email] && userList[email].password === password);
+    return !!(
+      email === userList[email] && userList[email].password === password
+    );
   },
 
   logout(userId) {}, // 이후 토큰, 세션 인증인가시 구현!
@@ -33,26 +35,26 @@ const User = {
     return 1;
   },
 
-  async getNickname(email) {
+  async getNicknameByEmail(email) {
     const userList = await fileSystem.readFile(filePath);
     return userList[email].nickname;
   },
 
-  async updateNickname(email, nickname) {
+  async updateNicknameEmail(email, nickname) {
     const userList = await fileSystem.readFile(filePath);
     userList[email].nickname = nickname;
     await fileSystem.saveFile(filePath, userList);
     return 1;
   },
 
-  async updatePassword(email, password) {
+  async updatePasswordEmail(email, password) {
     const userList = await fileSystem.readFile(filePath);
     userList[email].password = password;
     await fileSystem.saveFile(filePath, userList);
     return 1;
   },
 
-  async addUserInfo(board) {
+  async setUserInfoByEmail(board) {
     const userList = await fileSystem.readFile(filePath, "utf8");
 
     const userEmail = board.email;

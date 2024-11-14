@@ -2,8 +2,8 @@ const User = require("../Model/user");
 const userResponseCodes = require("../utils/userResponseCodes");
 
 module.exports.login = async (req) => {
-  const result = User.login(req.body.email, req.body.password);
-  if (!result) {
+  const result = await User.login(req.body.email, req.body.password);
+  if (result) {
     throw userResponseCodes.BAD_REQUEST.invalidCredentials;
   }
   return userResponseCodes.createResponse(
@@ -31,25 +31,27 @@ module.exports.signout = async (req) => {
   return User.signout(req.body.email);
 };
 
-module.exports.getNickname = async (req) => {
-  return User.getNickname(req.params.email);
+module.exports.getNicknameByEmail = async (req) => {
+  return User.getNicknameByEmail(req.params.email);
 };
 
-module.exports.updateNickname = async (req) => {
-  return User.updateNickname(req.body.email, req.body.nickname);
+module.exports.updateNicknameEmail = async (req) => {
+  return User.updateNicknameEmail(req.body.email, req.body.nickname);
 };
 
-module.exports.updatePassword = async (req) => {
-  return User.updatePassword(req.body.email, req.body.password);
+module.exports.updatePasswordEmail = async (req) => {
+  return User.updatePasswordEmail(req.body.email, req.body.password);
 };
 
-module.exports.addUserInfo = async (board) => {
-  return User.addUserInfo(board);
+// board (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
+module.exports.setUserInfoByEmail = async (board) => {
+  return User.setUserInfoByEmail(board);
 };
 
-module.exports.addUserInfoInList = async (board) => {
+// board list (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
+module.exports.setUserInfoInListByEmail = async (board) => {
   await Promise.all(
-    Object.keys(board).map((key) => User.addUserInfo(board[key])),
+    Object.keys(board).map((key) => User.setUserInfoByEmail(board[key])),
   );
   return board;
 };

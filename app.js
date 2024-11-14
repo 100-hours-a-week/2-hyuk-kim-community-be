@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api", userRouter);
 app.use("/api", boardRouter);
 
-// app.use(myError);
+app.use();
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`);
