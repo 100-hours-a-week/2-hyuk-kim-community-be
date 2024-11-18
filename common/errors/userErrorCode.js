@@ -16,20 +16,17 @@ const ErrorMessages = {
   EMAIL_NOT_FOUND: "ID에 해당하는 이메일이 존재하지 않습니다.",
   INVALID_USER_ID: "ID에 해당하는 사용자가 존재하지 않습니다.",
   EMAIL_EXISTS: "이미 존재하는 이메일입니다.",
-  UNEXPECTED_ERROR:
-    "서버에서 예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
+  UNEXPECTED_ERROR: "서버에서 예상치 못한 오류가 발생했습니다. 잠시 후 다시 시도해주세요.",
 };
 
 const UserErrorCode = {
-  createInvalidCredentials: () =>
-    new BadRequestError(ErrorMessages.INVALID_CREDENTIALS),
+  createInvalidCredentials: () => new BadRequestError(ErrorMessages.INVALID_CREDENTIALS),
   notLoggedIn: () => new UnauthorizedError(ErrorMessages.NOT_LOGGED_IN),
   createInvalidFormat: () => new BadRequestError(ErrorMessages.INVALID_FORMAT),
   createUserNotFound: () => new NotFoundError(ErrorMessages.USER_NOT_FOUND),
   createEmailNotFound: () => new NotFoundError(ErrorMessages.EMAIL_NOT_FOUND),
   createEmailExists: () => new ConflictError(ErrorMessages.EMAIL_EXISTS),
-  createUnexpectedError: () =>
-    new InternalServerError(ErrorMessages.UNEXPECTED_ERROR),
+  createUnexpectedError: () => new InternalServerError(ErrorMessages.UNEXPECTED_ERROR),
 };
 
 module.exports = UserErrorCode;

@@ -17,5 +17,6 @@ module.exports = {
         'yarn.lock',
         '*.md',
         '*.log',
+        'common/',
     ],
 };

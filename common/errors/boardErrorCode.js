@@ -9,13 +9,10 @@ const ErrorMessages = {
 };
 
 const BoardErrorCode = {
-  createMismatchUserId: () =>
-    new BadRequestError(ErrorMessages.MISMATCH_USER_ID),
-  createMismatchCommentId: () =>
-    new BadRequestError(ErrorMessages.MISMATCH_COMMENT_ID),
+  createMismatchUserId: () => new BadRequestError(ErrorMessages.MISMATCH_USER_ID),
+  createMismatchCommentId: () => new BadRequestError(ErrorMessages.MISMATCH_COMMENT_ID),
   createBoardNotFound: () => new NotFoundError(ErrorMessages.BOARD_NOT_FOUND),
-  createCommentNotFound: () =>
-    new NotFoundError(ErrorMessages.COMMENT_NOT_FOUND),
+  createCommentNotFound: () => new NotFoundError(ErrorMessages.COMMENT_NOT_FOUND),
   createInvalidFormat: () => new BadRequestError(ErrorMessages.INVALID_FORMAT),
 };
 

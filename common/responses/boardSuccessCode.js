@@ -14,8 +14,7 @@ const SuccessMessages = {
 const BoardSuccessCode = {
   // 200 응답
   createPostFetched: (data) => new OK(SuccessMessages.POSTS_FETCHED, data),
-  createPostDetailFetched: (data) =>
-    new OK(SuccessMessages.POST_DETAIL_FETCHED, data),
+  createPostDetailFetched: (data) => new OK(SuccessMessages.POST_DETAIL_FETCHED, data),
   createPostUpdated: (data) => new OK(SuccessMessages.POST_UPDATED, data),
   createPostDeleted: (data) => new OK(SuccessMessages.POST_DELETED, data),
   createCommentUpdated: (data) => new OK(SuccessMessages.COMMENT_UPDATED, data),
