@@ -4,7 +4,7 @@ const {
   NotFoundError,
   ConflictError,
   InternalServerError,
-} = require('./CustomError');
+} = require("./CustomError");
 
 const ErrorMessages = {
   NOT_LOGGED_IN: "로그인이 필요한 서비스입니다.",
