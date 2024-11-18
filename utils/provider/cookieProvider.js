@@ -4,21 +4,30 @@ const COOKIE_OPTIONS = {
   sameSite: "none",
 };
 
-export const setAccessToken = (res, accessToken) => {
+const setAccessToken = (res, accessToken) => {
+  console.log(`add cookie start!!`);
   res.cookie("access_token", accessToken, {
     ...COOKIE_OPTIONS,
-    maxAge: 30 * 60 * 1000,
+    maxAge: 30 * 60 * 1000, // 30분
   });
+  console.log(`add cookie success!!`);
 };
 
-export const setRefreshToken = (res, refreshToken) => {
+const setRefreshToken = (res, refreshToken) => {
   res.cookie("refresh_token", refreshToken, {
     ...COOKIE_OPTIONS,
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
   });
 };
 
-export const clearTokenCookies = (res) => {
-  res.clearCookie("accesstoken", COOKIE_OPTIONS);
-  res.clearCookie("refreshtoken", COOKIE_OPTIONS);
+const clearTokenCookies = (res) => {
+  res.clearCookie("access_token", COOKIE_OPTIONS);
+  res.clearCookie("refresh_token", COOKIE_OPTIONS);
+};
+
+// CommonJS 방식으로 모듈 내보내기
+module.exports = {
+  setAccessToken,
+  setRefreshToken,
+  clearTokenCookies
 };

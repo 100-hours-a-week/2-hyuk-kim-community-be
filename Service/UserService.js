@@ -1,14 +1,14 @@
 const User = require("../Model/user");
-const userResponseCodes = require("../utils/userResponseCodes");
+const UserErrorCode = require("../utils/userErrorCode");
 
 module.exports.login = async (req) => {
-  const result = await User.login(req.body.email, req.body.password);
-  if (result) {
-    throw userResponseCodes.BAD_REQUEST.invalidCredentials;
+  const loginSuccess = await User.login(req.body.email, req.body.password);
+  if (!loginSuccess) {
+    throw UserErrorCode.createInvalidCredentials();
   }
   return userResponseCodes.createResponse(
-    userResponseCodes.CREATED.userCreated,
-    result,
+    userResponseCodes.SUCCESS.loginSuccess,
+    req.body.email,
   );
 };
 

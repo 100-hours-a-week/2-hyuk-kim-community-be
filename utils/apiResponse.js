@@ -1,5 +1,5 @@
 const dateManager = require("./dateManager");
-const userResponseCodes = require("./userResponseCodes");
+const userResponseCodes = require("./userErrorCode");
 
 module.exports.success = (req, res, response) => {
   console.log(
@@ -15,6 +15,7 @@ module.exports.error = (req, res, error) => {
   );
   if (error.code >= 500) {
     return res.status(error.code).json({
+      // message: userResponseCodes.SERVER_ERROR.unexpectedError.message,
       message: userResponseCodes.SERVER_ERROR.unexpectedError.message,
     });
   }
