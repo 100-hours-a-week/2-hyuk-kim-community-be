@@ -1,12 +1,16 @@
 const userService = require("../Service/UserService");
 const apiResponse = require("../utils/apiResponse");
+const {generateRefreshToken, generateAccessToken} = require("../utils/provider/jwtProvider");
+const {setAccessToken} = require("../utils/provider/cookieProvider");
 
-module.exports.login = async function (req, res) {
+module.exports.login = async function (req, res, next) {
   try {
-    const response = await userService.login(req);
-    apiResponse.success(req, res, response);
+    const result = await userService.login(req);
+
+    apiResponse.success(req, res, result);
   } catch (error) {
-    next(error);
+    console.log(error);
+    next(error)
   }
 };
 
