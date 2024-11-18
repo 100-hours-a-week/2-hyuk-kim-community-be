@@ -1,8 +1,11 @@
 const apiResponse = require("../common/responses/apiResponse");
 const UserSuccessCode = require("../common/responses/UserSuccessCode");
 const userService = require("../Service/UserService");
-const {generateRefreshToken, generateAccessToken} = require("../utils/provider/jwtProvider");
-const {setAccessToken} = require("../utils/provider/cookieProvider");
+const {
+  generateRefreshToken,
+  generateAccessToken,
+} = require("../utils/provider/jwtProvider");
+const { setAccessToken } = require("../utils/provider/cookieProvider");
 
 /*
 반복되는 코드가 많아 추상화로 줄일 수 있을 거 같은데, 그게 올바른 방식인지 모르겠네!

@@ -29,5 +29,5 @@ const clearTokenCookies = (res) => {
 module.exports = {
   setAccessToken,
   setRefreshToken,
-  clearTokenCookies
+  clearTokenCookies,
 };
