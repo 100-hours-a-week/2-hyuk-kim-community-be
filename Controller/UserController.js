@@ -1,6 +1,6 @@
-const userService = require("../Service/UserService");
 const apiResponse = require("../common/responses/apiResponse");
 const UserSuccessCode = require("../common/responses/UserSuccessCode");
+const userService = require("../Service/UserService");
 const {generateRefreshToken, generateAccessToken} = require("../utils/provider/jwtProvider");
 const {setAccessToken} = require("../utils/provider/cookieProvider");
 
