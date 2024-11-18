@@ -14,10 +14,8 @@ const UserSuccessCode = {
   createLoginSuccess: (data) => new OK(SuccessMessages.LOGIN_SUCCESS, data),
   createAvailableEmail: (data) => new OK(SuccessMessages.AVAILABLE_EMAIL, data),
   createUserFetched: (data) => new OK(SuccessMessages.USER_FETCHED, data),
-  createNicknameUpdated: (data) =>
-    new OK(SuccessMessages.NICKNAME_UPDATED, data),
-  createPasswordUpdated: (data) =>
-    new OK(SuccessMessages.PASSWORD_UPDATED, data),
+  createNicknameUpdated: (data) => new OK(SuccessMessages.NICKNAME_UPDATED, data),
+  createPasswordUpdated: (data) => new OK(SuccessMessages.PASSWORD_UPDATED, data),
   createAccountDeleted: (data) => new OK(SuccessMessages.ACCOUNT_DELETED, data),
   createUserCreated: (data) => new Created(SuccessMessages.USER_CREATED, data),
 };

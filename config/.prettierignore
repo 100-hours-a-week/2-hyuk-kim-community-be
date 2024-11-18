@@ -1,4 +1,5 @@
 node_modules/
+common/
 
 package.json
 package-lock.json
@@ -8,3 +9,5 @@ yarn.lock
 *.md
 
 *.log
+
+
