@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const errorMiddleware = require("./middlewares/ErrorMiddleware");
 const loggingMiddleware = require("./middlewares/loggingMiddleware");
+const authMiddleware = require("./middlewares/authMiddleware");
 const app = express();
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
@@ -30,6 +31,7 @@ app.use(session({
 app.use(cookieParser());
 app.use(loggingMiddleware);
 app.use("/api", userRouter);
+// app.use("/api", authMiddleware, userRouter);
 app.use("/api", boardRouter);
 app.use(errorMiddleware);
 

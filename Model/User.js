@@ -5,28 +5,20 @@ const { v4: uuidv4 } = require("uuid");
 const User = {
   // 토큰, 세션이 없으니까 유저 이메일 전달
   // 이후 DB 연결 및 토큰 완성하면 userId or Token 전달로 변경하기!!
-  async login(email, password) {
+
+  async validEmail(email) {
     const userList = await fileSystem.readFile(filePath);
-
-    console.log(userList[email].password === password);
-
-    return userList[email].password === password;
+    return userList[email] || null;
   },
 
   logout(userId) {}, // 이후 토큰, 세션 인증인가시 구현!
 
   async signup(email, password, nickname) {
     const userList = await fileSystem.readFile(filePath);
-    // const id = uuidv4();
-    // userList[id] = { email, password, nickname };
+    // const id = uuidv4(); // email이 이미 고유한 값인데 굳이 id를 추가로 만들 필요 없을듯! -> 어 이메일 변경될 수 있나?-? -> 우리 그런 기능 없읍니다~
     userList[email] = { password, nickname };
     await fileSystem.saveFile(filePath, userList);
     return email;
-  },
-
-  async findUserByEmail(email) {
-    const userList = await fileSystem.readFile(filePath);
-    return !!userList[email];
   },
 
   async signout(email) {
