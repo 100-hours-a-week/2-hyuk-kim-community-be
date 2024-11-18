@@ -1,7 +1,4 @@
-const {
-  BadRequestError,
-  NotFoundError,
-} = require('./CustomError');
+const { BadRequestError, NotFoundError } = require("./CustomError");
 
 const ErrorMessages = {
   MISMATCH_USER_ID: "게시글 작성자와 다른 ID입니다.",
@@ -12,10 +9,13 @@ const ErrorMessages = {
 };
 
 const BoardErrorCode = {
-  createMismatchUserId: () => new BadRequestError(ErrorMessages.MISMATCH_USER_ID),
-  createMismatchCommentId: () => new BadRequestError(ErrorMessages.MISMATCH_COMMENT_ID),
+  createMismatchUserId: () =>
+    new BadRequestError(ErrorMessages.MISMATCH_USER_ID),
+  createMismatchCommentId: () =>
+    new BadRequestError(ErrorMessages.MISMATCH_COMMENT_ID),
   createBoardNotFound: () => new NotFoundError(ErrorMessages.BOARD_NOT_FOUND),
-  createCommentNotFound: () => new NotFoundError(ErrorMessages.COMMENT_NOT_FOUND),
+  createCommentNotFound: () =>
+    new NotFoundError(ErrorMessages.COMMENT_NOT_FOUND),
   createInvalidFormat: () => new BadRequestError(ErrorMessages.INVALID_FORMAT),
 };
 

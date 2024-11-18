@@ -12,14 +12,14 @@ module.exports.getPostList = async () => {
 };
 
 module.exports.createPost = async (req) => {
-  const {title, content, email} = req.body;
-  await validateFields(req.body, ['title', 'content', 'email']);
+  const { title, content, email } = req.body;
+  await validateFields(req.body, ["title", "content", "email"]);
   return post.createPost(title, content, email);
 };
 
 module.exports.getPostByPostId = async (req) => {
   const postId = req.params.postId;
-  await validateFields(req.params, ['postId']);
+  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
   const result = await post.getPostByPostId(postId);
   result["postId"] = req.params.postId;
@@ -31,14 +31,14 @@ module.exports.getPostByPostId = async (req) => {
 
 module.exports.getPostEditByPostId = async (req) => {
   const postId = req.params.postId;
-  await validateFields(req.params, ['postId']);
+  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
   return await post.getPostEditByPostId(postId);
 };
 
 module.exports.patchPostViews = async (req) => {
   const postId = req.params.postId;
-  await validateFields(req.params, ['postId']);
+  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
   return post.addPostViews(postId);
 };
@@ -46,38 +46,38 @@ module.exports.patchPostViews = async (req) => {
 module.exports.updatePostByPostId = async (req) => {
   const postId = req.params.postId;
   const { title, content } = req.body;
-  await validateFields(req.params, ['postId']);
-  await validateFields(req.body, ['title', 'content']);
+  await validateFields(req.params, ["postId"]);
+  await validateFields(req.body, ["title", "content"]);
   await validatePost(postId);
   return post.updatePostByPostId(postId, title, content);
 };
 
 module.exports.deletePostByPostId = async (req) => {
   const postId = req.params.postId;
-  await validateFields(req.params, ['postId']);
+  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
   return await post.deleteById(postId);
 };
 
 module.exports.createComment = async (req) => {
-  const {postId, content, email} = req.body;
-  await validateFields(req.body, ['postId', 'content', 'email']);
+  const { postId, content, email } = req.body;
+  await validateFields(req.body, ["postId", "content", "email"]);
   await validatePost(postId);
   return await comment.createComment(postId, content, email);
 };
 
 module.exports.updateCommentByCommentId = async (req) => {
-  const {commentId} = req.params;
-  const {content, email} = req.body;
-  await validateFields(req.params, ['commentId']);
-  await validateFields(req.body, ['content', 'email']);
+  const { commentId } = req.params;
+  const { content, email } = req.body;
+  await validateFields(req.params, ["commentId"]);
+  await validateFields(req.body, ["content", "email"]);
   await validateComment(commentId);
   return await comment.updateComment(commentId, content, email);
 };
 
 module.exports.deleteCommentByCommentId = async (req) => {
-  const {commentId} = req.params;
-  await validateFields(req.params, ['commentId']);
+  const { commentId } = req.params;
+  await validateFields(req.params, ["commentId"]);
   await validateComment(commentId);
   return await comment.deleteComment(commentId);
 };
