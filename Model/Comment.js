@@ -15,6 +15,12 @@ const Comment = {
     );
   },
 
+  async getCommentById(commentId) {
+    const commentList = await fileSystem.readFile(filePath);
+    await fileSystem.saveFile(filePath, commentList);
+    return commentList[commentId];
+  },
+
   async createComment(postId, content, email) {
     const commentList = await fileSystem.readFile(filePath);
     const id = uuidv4();

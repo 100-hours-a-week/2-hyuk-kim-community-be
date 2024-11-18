@@ -25,7 +25,7 @@ const Post = {
 
   async getPostByPostId(postId) {
     const postList = await fileSystem.readFile(filePath);
-    postList[postId].countView += 1;
+    // postList[postId].countView += 1; // !!! 여기 말고 다른 데서 해야되는데;
     await fileSystem.saveFile(filePath, postList);
     return postList[postId];
   },
