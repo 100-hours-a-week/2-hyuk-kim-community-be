@@ -10,7 +10,7 @@ const UserErrorCode = require("../common/errors/userErrorCode");
 
 module.exports.login = async (req) => {
   const { email, password } = req.body;
-  validateFields(req.body, ['email', 'password']);
+  await validateFields(req.body, ['email', 'password']);
   const user = await validateEmail(email);
   const passwordMatch = user.password === password; // 패스워드 비교하는 함수 필요!
   if (!passwordMatch) {
@@ -23,35 +23,35 @@ module.exports.logout = async (req) => {};
 
 module.exports.signup = async (req) => {
   const { email, password, nickname } = req.body;
-  validateFields(req.body, ['email', 'password', 'nickname']);
+  await validateFields(req.body, ['email', 'password', 'nickname']);
   await validateNewEmail(email); // 얘는 반대여야지!
   return await User.signup(email, password, nickname);
 };
 
 module.exports.signout = async (req) => {
   const { email } = req.body;
-  validateFields(req.body, ['email']);
+  await validateFields(req.body, ['email']);
   await validateEmail(email);
   return User.signout(email);
 };
 
 module.exports.getNicknameByEmail = async (req) => {
   const email = req.body.email;
-  validateFields(req.body, ['email']);
+  await validateFields(req.body, ['email']);
   await validateEmail(email);
   return User.getNicknameByEmail(email);
 };
 
 module.exports.updateNicknameEmail = async (req) => {
   const { email, nickname } = req.body;
-  validateFields(req.body, ['email', 'nickname']);
+  await validateFields(req.body, ['email', 'nickname']);
   await validateEmail(email);
   return User.updateNicknameEmail(email, nickname);
 };
 
 module.exports.updatePasswordEmail = async (req) => {
   const { email, password } = req.body;
-  validateFields(req.body, ['email', 'password']);
+  await validateFields(req.body, ['email', 'password']);
   await validateEmail(email);
   return User.updatePasswordEmail(email, password);
 };
