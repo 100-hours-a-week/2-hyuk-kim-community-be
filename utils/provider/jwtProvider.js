@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
+const dotenv = require('dotenv').config();
 
-const JWT_SECRET = "이건못뚫겠지아무리너라도이건힘들거야푸하하풉킼킼";
+const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_ACCESS_TOKEN_EXPIRATION = "30m"; // 30분
 const JWT_REFRESH_TOKEN_EXPIRATION = "7d"; // 7일
 

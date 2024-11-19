@@ -27,6 +27,12 @@ app.use(
     secret: "your-secret-key", // 세션 ID를 암호화할 비밀키
     resave: false, // 세션을 매 요청마다 다시 저장할지 여부
     saveUninitialized: true, // 세션에 값이 없더라도 세션을 저장할지 여부
+    cookie: {
+      httpOnly: true,
+      secure: false,  // localhost는 false
+      sameSite: 'lax',
+      maxAge: 24 * 60 * 60 * 1000
+    }
   }),
 );
 

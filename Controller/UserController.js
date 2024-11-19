@@ -1,6 +1,7 @@
 const apiResponse = require("../common/responses/apiResponse");
 const UserSuccessCode = require("../common/responses/UserSuccessCode");
 const userService = require("../Service/UserService");
+const { v4: uuidv4 } = require("uuid");
 const {
   generateRefreshToken,
   generateAccessToken,
@@ -8,7 +9,7 @@ const {
 const { setAccessToken } = require("../utils/provider/cookieProvider");
 
 /*
-반복되는 코드가 많아 추상화로 줄일 수 있을 거 같은데, 그게 올바른 방식인지 모르겠네!
+반복되는 코드가 많아 추상화할 수 있을 거 같은데, 그게 긍정적인 방식인지 모르겠네!
 추가될만한 요소
 1. Validation -> 근데 이거는 미들웨어에서 Joi라는 라이브러리 사용하면 충분히 추상화가 가능해보임!
 2. Session Cookie -> 이게 좀 문제긴 하네 이거는 느낌이 좀 다를듯 -> 근데 그건 결국 로그인만 그런 건데
@@ -20,8 +21,11 @@ const { setAccessToken } = require("../utils/provider/cookieProvider");
 
 module.exports.login = async function (req, res, next) {
   try {
-    const result = await userService.login(req);
-    const successResponse = UserSuccessCode.createLoginSuccess(result);
+    const email = await userService.login(req);
+    const sessionId = uuidv4();
+    req.session.sessionId = sessionId  // session.id는 express-session이 자동 생성
+    req.session.email = email;
+    const successResponse = UserSuccessCode.createLoginSuccess({ email, sessionId });
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);

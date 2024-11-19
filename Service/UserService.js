@@ -14,7 +14,7 @@ module.exports.login = async (req) => {
   if (!passwordMatch) {
     throw UserErrorCode.createInvalidCredentials();
   }
-  return { email };
+  return email;
 };
 
 module.exports.logout = async (req) => {};
