@@ -11,6 +11,8 @@ const ErrorMessages = {
   INVALID_ACCESS: "잘못된 접근입니다.",
   UNAUTHORIZED_USER_ACCESS: "해당 사용자의 정보에 접근할 권한이 없습니다.",
   INVALID_CREDENTIALS: "아이디 또는 비밀번호가 일치하지 않습니다.",
+  INVALID_AUTH: "사용자 인증에 실패했습니다.",
+  EXPIRED_SESSION: "세션이 만료되었습니다. 다시 로그인해주세요.",
   INVALID_FORMAT: "입력 형식이 올바르지 않습니다.",
   USER_NOT_FOUND: "ID에 해당하는 사용자가 존재하지 않습니다.",
   EMAIL_NOT_FOUND: "ID에 해당하는 이메일이 존재하지 않습니다.",
@@ -20,6 +22,8 @@ const ErrorMessages = {
 };
 
 const UserErrorCode = {
+  createInvalidAuth: () => new BadRequestError(ErrorMessages.INVALID_AUTH),
+  createExpiredSession: () => new BadRequestError(ErrorMessages.EXPIRED_SESSION),
   createInvalidCredentials: () => new BadRequestError(ErrorMessages.INVALID_CREDENTIALS),
   notLoggedIn: () => new UnauthorizedError(ErrorMessages.NOT_LOGGED_IN),
   createInvalidFormat: () => new BadRequestError(ErrorMessages.INVALID_FORMAT),
