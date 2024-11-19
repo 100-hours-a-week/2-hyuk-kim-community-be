@@ -15,7 +15,6 @@ const User = {
 
   async signup(email, password, nickname) {
     const userList = await fileSystem.readFile(filePath);
-    // const id = uuidv4(); // email이 이미 고유한 값인데 굳이 id를 추가로 만들 필요 없을듯! -> 어 이메일 변경될 수 있나?-? -> 우리 그런 기능 없읍니다~
     userList[email] = { password, nickname };
     await fileSystem.saveFile(filePath, userList);
     return email;
