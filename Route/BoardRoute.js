@@ -7,17 +7,19 @@ boardRoute.get("/posts", boardController.getPostList); // O
 boardRoute.get("/posts/:postId", boardController.getPostByPostId); // O
 boardRoute.get("/posts/:postId/edit", boardController.getPostEditByPostId); // O
 
-boardRoute.post("/posts", boardController.createPost);
-boardRoute.patch("/posts/:postId", boardController.updatePostByPostId);
-boardRoute.delete("/posts/:postId", boardController.deletePostByPostId);
+boardRoute.post("/posts", authMiddleware, boardController.createPost);
+boardRoute.patch("/posts/:postId", authMiddleware, boardController.updatePostByPostId);
+boardRoute.delete("/posts/:postId", authMiddleware, boardController.deletePostByPostId);
 
-boardRoute.post("/comments", boardController.createComment);
+boardRoute.post("/comments", authMiddleware, boardController.createComment);
 boardRoute.put(
   "/comments/:commentId",
+  authMiddleware,
   boardController.updateCommentByCommentId,
 );
 boardRoute.delete(
   "/comments/:commentId",
+  authMiddleware,
   boardController.deleteCommentByCommentId,
 );
 
