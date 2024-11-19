@@ -26,7 +26,8 @@ module.exports.login = async function (req, res, next) {
   try {
     const email = await userService.login(req);
     req.session.email = email; // localhost 프론트로 테스트시 주석처리!!
-    const successResponse = UserSuccessCode.createLoginSuccess({ email });
+    const sessionId = req.session.id;
+    const successResponse = UserSuccessCode.createLoginSuccess({ email, sessionId});
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);

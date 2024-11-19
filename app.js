@@ -38,8 +38,8 @@ app.use(
 
 app.use(cookieParser());
 app.use(loggingMiddleware);
-app.use("/api", userRouter);
 app.use("/api", boardRouter);
+app.use("/api", userRouter);
 app.use(errorMiddleware);
 
 app.listen(port, () => {
