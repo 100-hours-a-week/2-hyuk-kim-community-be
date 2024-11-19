@@ -2,6 +2,7 @@ const { OK, Created } = require("./CustomSuccess");
 
 const SuccessMessages = {
   LOGIN_SUCCESS: "로그인 성공",
+  LOGOUT_SUCCESS: "로그아웃 성공",
   AVAILABLE_EMAIL: "사용 가능한 이메일입니다.",
   USER_FETCHED: "사용자 조회에 성공했습니다.",
   NICKNAME_UPDATED: "닉네임 수정 성공",
@@ -12,6 +13,7 @@ const SuccessMessages = {
 
 const UserSuccessCode = {
   createLoginSuccess: (data) => new OK(SuccessMessages.LOGIN_SUCCESS, data),
+  createLogoutSuccess: () => new OK(SuccessMessages.LOGOUT_SUCCESS),
   createAvailableEmail: (data) => new OK(SuccessMessages.AVAILABLE_EMAIL, data),
   createUserFetched: (data) => new OK(SuccessMessages.USER_FETCHED, data),
   createNicknameUpdated: (data) => new OK(SuccessMessages.NICKNAME_UPDATED, data),
