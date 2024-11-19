@@ -39,7 +39,6 @@ app.use(
 app.use(cookieParser());
 app.use(loggingMiddleware);
 app.use("/api", userRouter);
-// app.use("/api", authMiddleware, userRouter);
 app.use("/api", boardRouter);
 app.use(errorMiddleware);
 
