@@ -22,8 +22,8 @@ const ErrorMessages = {
 };
 
 const UserErrorCode = {
-  createInvalidAuth: () => new BadRequestError(ErrorMessages.INVALID_AUTH),
-  createExpiredSession: () => new BadRequestError(ErrorMessages.EXPIRED_SESSION),
+  createInvalidAuth: () => new UnauthorizedError(ErrorMessages.INVALID_AUTH),
+  createExpiredSession: () => new UnauthorizedError(ErrorMessages.EXPIRED_SESSION),
   createInvalidCredentials: () => new BadRequestError(ErrorMessages.INVALID_CREDENTIALS),
   notLoggedIn: () => new UnauthorizedError(ErrorMessages.NOT_LOGGED_IN),
   createInvalidFormat: () => new BadRequestError(ErrorMessages.INVALID_FORMAT),
