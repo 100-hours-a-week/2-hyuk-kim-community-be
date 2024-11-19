@@ -22,10 +22,8 @@ const { setAccessToken } = require("../utils/provider/cookieProvider");
 module.exports.login = async function (req, res, next) {
   try {
     const email = await userService.login(req);
-    const sessionId = uuidv4();
-    req.session.sessionId = sessionId  // session.id는 express-session이 자동 생성
-    req.session.email = email;
-    const successResponse = UserSuccessCode.createLoginSuccess({ email, sessionId });
+    req.session.email = email; // localhost 프론트로 테스트시 주석처리!!
+    const successResponse = UserSuccessCode.createLoginSuccess({ email });
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);
