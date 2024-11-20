@@ -1,7 +1,7 @@
 # Created by https://www.gitignore.io/api/macos,vim,intellij,scala,sbt,git
 
 ### Cofiguration ###
-.env.development
+.env.develop
 
 ### Git ###
 *.orig
