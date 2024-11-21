@@ -1,4 +1,6 @@
-const User = require("../Model/user");
+// const User = require("../Model/user");
+const UserModel = require("../Model/UserModel");
+const userModel = new UserModel();
 const UserErrorCode = require("../common/errors/userErrorCode");
 
 /*
@@ -20,38 +22,39 @@ module.exports.login = async (req) => {
 module.exports.logout = async (req) => {};
 
 module.exports.signup = async (req) => {
+  console.log(req.body);
   const { email, password, nickname } = req.body;
   await validateFields(req.body, ["email", "password", "nickname"]);
   await validateNewEmail(email); // 얘는 반대여야지!
-  return await User.signup(email, password, nickname);
+  return await userModel.signup(email, password, nickname);
 };
 
 module.exports.signout = async (req) => {
   const { email } = req.body;
   await validateFields(req.body, ["email"]);
   await validateEmail(email);
-  return User.signout(email);
+  return userModel.signout(email);
 };
 
 module.exports.getNicknameByEmail = async (req) => {
   const email = req.body.email;
   await validateFields(req.body, ["email"]);
   await validateEmail(email);
-  return User.getNicknameByEmail(email);
+  return userModel.getNicknameByEmail(email);
 };
 
 module.exports.updateNicknameEmail = async (req) => {
   const { email, nickname } = req.body;
   await validateFields(req.body, ["email", "nickname"]);
   await validateEmail(email);
-  return User.updateNicknameEmail(email, nickname);
+  return userModel.updateNicknameEmail(email, nickname);
 };
 
 module.exports.updatePasswordEmail = async (req) => {
   const { email, password } = req.body;
   await validateFields(req.body, ["email", "password"]);
   await validateEmail(email);
-  return User.updatePasswordEmail(email, password);
+  return userModel.updatePasswordEmail(email, password);
 };
 
 // 필수값 데이터 검증
@@ -63,26 +66,26 @@ const validateFields = (fields, required) => {
 
 // 이메일에 맞는 사용자 있는지 검증
 const validateEmail = async (email) => {
-  const user = await User.validEmail(email);
+  const user = await userModel.validEmail(email);
   if (!user) throw UserErrorCode.createUserNotFound();
   return user;
 };
 
 // 새로운 이메일인지 검증
 const validateNewEmail = async (email) => {
-  const exists = await User.validEmail(email);
+  const exists = await userModel.validEmail(email);
   if (exists) throw UserErrorCode.createEmailExists();
 };
 
 // board (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
 module.exports.setUserInfoByEmail = async (board) => {
-  return User.setUserInfoByEmail(board);
+  return userModel.setUserInfoByEmail(board);
 };
 
 // board list (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
 module.exports.setUserInfoInListByEmail = async (board) => {
   await Promise.all(
-    Object.keys(board).map((key) => User.setUserInfoByEmail(board[key])),
+    Object.keys(board).map((key) => userModel.setUserInfoByEmail(board[key])),
   );
   return board;
 };
