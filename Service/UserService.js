@@ -11,7 +11,10 @@ const UserErrorCode = require("../common/errors/userErrorCode");
 module.exports.login = async (req) => {
   const { email, password } = req.body;
   await validateFields(req.body, ["email", "password"]);
-  const user = await validateId(email);
+  const user = await validateEmail(email);
+  if (user.deleteat) {
+    throw UserErrorCode.createDeleteUser();
+  }
   const passwordMatch = user.password === password; // 패스워드 비교하는 함수 필요!
   if (!passwordMatch) {
     throw UserErrorCode.createInvalidCredentials();
@@ -26,33 +29,36 @@ module.exports.signup = async (req) => {
   const { email, password, nickname } = req.body;
   await validateFields(req.body, ["email", "password", "nickname"]);
   await validateNewEmail(email);
-  return await userModel.signup(email, password, nickname); // TF 검증 필요!
+  if(!await userModel.signup(email, password, nickname)) {
+      throw UserErrorCode.createUnexpectedError();
+  }
+  return {}// TF 검증 필요!
 };
 
 module.exports.signout = async (req) => {
   const { userId } = req.body;
-  await validateFields(req.body, ["email"]);
+  await validateFields(req.body, ["userId"]);
   await validateId(userId);
   return userModel.signout(userId);
 };
 
 module.exports.getNicknameById = async (req) => {
-  const { userId}  = req.body;
-  await validateFields(req.body, ["email"]);
+  const { userId }  = req.body;
+  await validateFields(req.body, ["userId"]);
   await validateId(userId);
   return userModel.getNicknameById(userId);
 };
 
 module.exports.updateNicknameById = async (req) => {
   const { userId, nickname } = req.body;
-  await validateFields(req.body, ["email", "nickname"]);
+  await validateFields(req.body, ["userId", "nickname"]);
   await validateId(userId);
   return userModel.updateNicknameById(userId, nickname);
 };
 
 module.exports.updatePasswordById = async (req) => {
   const { userId, password } = req.body;
-  await validateFields(req.body, ["email", "password"]);
+  await validateFields(req.body, ["userId", "password"]);
   await validateId(userId);
   return userModel.updatePasswordById(userId, password);
 };
@@ -65,11 +71,11 @@ const validateFields = (fields, required) => {
 };
 
 // 이메일에 맞는 사용자 있는지 검증 -> Id로 변경 예정
-// const validateEmail = async (email) => {
-//   const user = await userModel.validEmail(email);
-//   if (!user) throw UserErrorCode.createUserNotFound();
-//   return user;
-// };
+const validateEmail = async (email) => {
+  const user = await userModel.validEmail(email);
+  if (!user) throw UserErrorCode.createUserNotFound();
+  return user;
+};
 
 // Id에 맞는 사용자가 있는지 검증
 const validateId = async (userId) => {

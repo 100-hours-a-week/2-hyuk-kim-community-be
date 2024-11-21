@@ -35,7 +35,8 @@ class UserModel extends CommonModel {
 
     async signout(userId) {
         const result = await this.executeQuery(
-            `DELETE FROM ${this.tableName} WHERE id = ?`,
+            // `DELETE FROM ${this.tableName} WHERE id = ?`,
+            `UPDATE ${this.tableName} SET deleteat = NOW() WHERE id = ?`,
             [userId]
         );
         return result.affectedRows;
