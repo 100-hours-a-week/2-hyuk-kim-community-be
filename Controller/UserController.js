@@ -61,9 +61,9 @@ module.exports.signout = async function (req, res, next) {
   }
 };
 
-module.exports.getNicknameByEmail = async function (req, res, next) {
+module.exports.getNicknameById = async function (req, res, next) {
   try {
-    const result = await userService.getNicknameByEmail(req);
+    const result = await userService.getNicknameById(req);
     const successResponse = UserSuccessCode.createUserFetched(result);
     apiResponse.success(req, res, successResponse);
   } catch (error) {
@@ -71,9 +71,9 @@ module.exports.getNicknameByEmail = async function (req, res, next) {
   }
 };
 
-module.exports.updateNicknameByEmail = async function (req, res, next) {
+module.exports.updateNicknameById = async function (req, res, next) {
   try {
-    const result = await userService.updateNicknameEmail(req);
+    const result = await userService.updateNicknameById(req);
     const successResponse = UserSuccessCode.createNicknameUpdated(result);
     apiResponse.success(req, res, successResponse);
   } catch (error) {
@@ -81,9 +81,9 @@ module.exports.updateNicknameByEmail = async function (req, res, next) {
   }
 };
 
-module.exports.updatePasswordByEmail = async function (req, res, next) {
+module.exports.updatePasswordById = async function (req, res, next) {
   try {
-    const result = await userService.updatePasswordEmail(req);
+    const result = await userService.updatePasswordById(req);
     const successResponse = UserSuccessCode.createPasswordUpdated(result);
     apiResponse.success(req, res, successResponse);
   } catch (error) {

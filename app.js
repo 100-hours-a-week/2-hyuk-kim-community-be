@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+dotenv.config({path: `.env.${process.env.NODE_ENV}`});
 const express = require("express");
 const cors = require("cors");
 const errorMiddleware = require("./middlewares/ErrorMiddleware");
@@ -17,6 +19,7 @@ const corsOptions = {
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // 허용할 HTTP 메서드
   credentials: true, // 인증 정보 허용
 };
+
 
 // CORS 미들웨어 사용
 app.use(cors(corsOptions));
