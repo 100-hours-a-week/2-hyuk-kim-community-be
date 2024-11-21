@@ -6,8 +6,8 @@ const userService = require("../Service/UserService");
 module.exports.getPostList = async (req, res, next) => {
   try {
     const board = await boardService.getPostList(req);
-    const result = await userService.setUserInfoInListByEmail(board);
-    const successResponse = BoardSuccessCode.createPostFetched(result);
+    // const result = await userService.setUserInfoInListByEmail(board);
+    const successResponse = BoardSuccessCode.createPostFetched(board);
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);
@@ -27,8 +27,7 @@ module.exports.createPost = async (req, res, next) => {
 module.exports.getPostByPostId = async (req, res, next) => {
   try {
     const board = await boardService.getPostByPostId(req);
-    const result = await userService.setUserInfoByEmail(board);
-    const successResponse = BoardSuccessCode.createPostDetailFetched(result);
+    const successResponse = BoardSuccessCode.createPostDetailFetched(board);
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);

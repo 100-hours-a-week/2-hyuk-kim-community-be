@@ -44,6 +44,8 @@ module.exports.signout = async (req) => {
 
 module.exports.getNicknameById = async (req) => {
   const { userId }  = req.body;
+  console.log(req.body);
+  console.log(userId);
   await validateFields(req.body, ["userId"]);
   await validateId(userId);
   return userModel.getNicknameById(userId);

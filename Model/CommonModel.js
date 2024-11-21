@@ -1,19 +1,24 @@
-const { pool } = require('../config/database');
+const { pool } = require('../config/mariadb');
 
-class BaseModel {
+class CommonModel {
     constructor(tableName) {
         this.tableName = tableName;
     }
 
     async executeQuery(query, params = []) {
+        console.log(`query : ${query}`);
         let conn;
         try {
             conn = await pool.getConnection();
-            return await conn.query(query, params);
+            const result =  await conn.query(query, params);
+            console.log(`result : ${result}`);
+            return result;
         } catch (err) {
             throw err;
         } finally {
-            if (conn) conn.release();
+            if (conn) await conn.release();
         }
     }
 }
+
+module.exports = CommonModel;

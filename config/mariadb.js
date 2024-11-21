@@ -12,7 +12,9 @@ const pool = mariadb.createPool({
     acquireTimeout: 10000,   // 연결 획득 타임아웃
     connectTimeout: 5000,    // TCP 연결 타임아웃
     trace: true,            // 디버깅용 로그 활성화
-    initializationTimeout: 10000
+    initializationTimeout: 10000,
+    timezone: '+09:00',  // 또는 'Asia/Seoul'
+    dateStrings: true
 });
 
 module.exports = {
