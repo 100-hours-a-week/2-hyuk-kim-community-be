@@ -60,10 +60,10 @@ class UserModel extends CommonModel {
 
     async getNicknameById(userId) {
         const rows = await this.executeQuery(
-            `SELECT nickname FROM ${this.tableName} WHERE id = ?`,
+            `SELECT email, nickname FROM ${this.tableName} WHERE id = ?`,
             [userId]
         );
-        return rows[0]?.nickname;
+        return rows[0];
     }
 
     async updateNicknameEmail(email, nickname) {

@@ -1,47 +1,48 @@
 const BoardErrorCode = require("../common/errors/boardErrorCode");
-const post = require("../Model/Post");
-const comment = require("../Model/Comment");
+const postModel = require("../Model/PostModel");
+const commentModel = require("../Model/CommentModel");
 
 // 페이징 추가 필요!
 module.exports.getPostList = async () => {
-  const list = await post.getPostList();
-  for (const key of Object.keys(list)) {
-    list[key].comment = (await comment.getCommentListByPostId(key)) || {};
-  }
+  const list = await postModel.getPostList(); // 댓글 수 쿼리로 받기
+  // for (const key of Object.keys(list)) {
+  //   list[key].comment = (await commentModel.getCommentListByPostId(key)) || {};
+  // }
+  console.log(list);
   return list;
 };
 
 module.exports.createPost = async (req) => {
-  const { title, content, email } = req.body;
-  await validateFields(req.body, ["title", "content", "email"]);
-  return post.createPost(title, content, email);
+  const { title, content, userId } = req.body;
+  await validateFields(req.body, ["title", "content", "userId"]);
+  return postModel.createPost(title, content, userId);
 };
 
 module.exports.getPostByPostId = async (req) => {
   const postId = req.params.postId;
   await validateFields(req.params, ["postId"]);
   await validatePost(postId);
-  const result = await post.getPostByPostId(postId);
+  const result = await postModel.getPostByPostId(postId);
   result["postId"] = req.params.postId;
-  result["comment"] =
-    (await comment.getCommentListByPostId(req.params.postId)) || {};
-  await post.addPostViews(postId);
+  result["comment"] = (await commentModel.getCommentListByPostId(postId));
+    // (await commentModel.getCommentListByPostId(req.params.postId)) || {};
   return result;
 };
 
+// 상태 관리로 상세페이지에서 넘겨주면 되니까 리액트로 변경시 없어질 API!
 module.exports.getPostEditByPostId = async (req) => {
   const postId = req.params.postId;
   await validateFields(req.params, ["postId"]);
   await validatePost(postId);
-  return await post.getPostEditByPostId(postId);
+  return await postModel.getPostEditByPostId(postId);
 };
 
-module.exports.patchPostViews = async (req) => {
-  const postId = req.params.postId;
-  await validateFields(req.params, ["postId"]);
-  await validatePost(postId);
-  return post.addPostViews(postId);
-};
+// module.exports.patchPostViews = async (req) => {
+//   const postId = req.params.postId;
+//   await validateFields(req.params, ["postId"]);
+//   await validatePost(postId);
+//   return postModel.addPostViews(postId);
+// };
 
 module.exports.updatePostByPostId = async (req) => {
   const postId = req.params.postId;
@@ -49,37 +50,39 @@ module.exports.updatePostByPostId = async (req) => {
   await validateFields(req.params, ["postId"]);
   await validateFields(req.body, ["title", "content"]);
   await validatePost(postId);
-  return post.updatePostByPostId(postId, title, content);
+  return postModel.updatePostByPostId(postId, title, content);
 };
 
 module.exports.deletePostByPostId = async (req) => {
   const postId = req.params.postId;
   await validateFields(req.params, ["postId"]);
   await validatePost(postId);
-  return await post.deleteById(postId);
+  await postModel.deleteById(postId);
+  await commentModel.deleteCommentListByPostId(postId);
+  return await postModel.deleteById(postId);
 };
 
 module.exports.createComment = async (req) => {
-  const { postId, content, email } = req.body;
-  await validateFields(req.body, ["postId", "content", "email"]);
+  const { postId, content, userId } = req.body;
+  await validateFields(req.body, ["postId", "content", "userId"]);
   await validatePost(postId);
-  return await comment.createComment(postId, content, email);
+  return await commentModel.createComment(postId, content, userId);
 };
 
 module.exports.updateCommentByCommentId = async (req) => {
   const { commentId } = req.params;
-  const { content, email } = req.body;
+  const { content, userId } = req.body; // 작성자 검증 필요
   await validateFields(req.params, ["commentId"]);
-  await validateFields(req.body, ["content", "email"]);
+  await validateFields(req.body, ["content", "userId"]);
   await validateComment(commentId);
-  return await comment.updateComment(commentId, content, email);
+  return await commentModel.updateComment(commentId, content);
 };
 
 module.exports.deleteCommentByCommentId = async (req) => {
   const { commentId } = req.params;
   await validateFields(req.params, ["commentId"]);
   await validateComment(commentId);
-  return await comment.deleteComment(commentId);
+  return await commentModel.deleteComment(commentId);
 };
 
 // 필수값 데이터 검증
@@ -91,14 +94,14 @@ const validateFields = (fields, required) => {
 
 // 게시글 id 에 맞는 게시글 있는지 검증
 const validatePost = async (postId) => {
-  const result = await post.getPostByPostId(postId);
+  const result = await postModel.getPostByPostId(postId);
   if (!result) throw BoardErrorCode.createBoardNotFound();
   return result;
 };
 
 // 댓글 id 에 맞는 댓글 있는지 검증
 const validateComment = async (commentId) => {
-  const result = await comment.getCommentById(commentId);
+  const result = await commentModel.getCommentById(commentId);
   if (!result) throw BoardErrorCode.createCommentNotFound();
   return result;
 };

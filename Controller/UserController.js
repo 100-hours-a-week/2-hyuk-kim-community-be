@@ -24,10 +24,10 @@ const { setAccessToken } = require("../utils/provider/cookieProvider");
 
 module.exports.login = async function (req, res, next) {
   try {
-    const email = await userService.login(req);
-    req.session.email = email; // localhost 프론트로 테스트시 주석처리!!
+    const userId = await userService.login(req);
+    req.session.userId = userId; // localhost 프론트로 테스트시 주석처리!!
     const sessionId = req.session.id;
-    const successResponse = UserSuccessCode.createLoginSuccess({ email, sessionId});
+    const successResponse = UserSuccessCode.createLoginSuccess({ userId, sessionId});
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);
@@ -65,6 +65,7 @@ module.exports.getNicknameById = async function (req, res, next) {
   try {
     const result = await userService.getNicknameById(req);
     const successResponse = UserSuccessCode.createUserFetched(result);
+    console.log(`result: ${JSON.stringify(result)}`);
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);
