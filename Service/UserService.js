@@ -11,12 +11,12 @@ const UserErrorCode = require("../common/errors/userErrorCode");
 module.exports.login = async (req) => {
   const { email, password } = req.body;
   await validateFields(req.body, ["email", "password"]);
-  const user = await validateEmail(email);
+  const user = await validateId(email);
   const passwordMatch = user.password === password; // 패스워드 비교하는 함수 필요!
   if (!passwordMatch) {
     throw UserErrorCode.createInvalidCredentials();
   }
-  return email;
+  return user.id;
 };
 
 module.exports.logout = async (req) => {};
@@ -25,36 +25,36 @@ module.exports.signup = async (req) => {
   console.log(req.body);
   const { email, password, nickname } = req.body;
   await validateFields(req.body, ["email", "password", "nickname"]);
-  await validateNewEmail(email); // 얘는 반대여야지!
-  return await userModel.signup(email, password, nickname);
+  await validateNewEmail(email);
+  return await userModel.signup(email, password, nickname); // TF 검증 필요!
 };
 
 module.exports.signout = async (req) => {
-  const { email } = req.body;
+  const { userId } = req.body;
   await validateFields(req.body, ["email"]);
-  await validateEmail(email);
-  return userModel.signout(email);
+  await validateId(userId);
+  return userModel.signout(userId);
 };
 
-module.exports.getNicknameByEmail = async (req) => {
-  const email = req.body.email;
+module.exports.getNicknameById = async (req) => {
+  const { userId}  = req.body;
   await validateFields(req.body, ["email"]);
-  await validateEmail(email);
-  return userModel.getNicknameByEmail(email);
+  await validateId(userId);
+  return userModel.getNicknameById(userId);
 };
 
-module.exports.updateNicknameEmail = async (req) => {
-  const { email, nickname } = req.body;
+module.exports.updateNicknameById = async (req) => {
+  const { userId, nickname } = req.body;
   await validateFields(req.body, ["email", "nickname"]);
-  await validateEmail(email);
-  return userModel.updateNicknameEmail(email, nickname);
+  await validateId(userId);
+  return userModel.updateNicknameById(userId, nickname);
 };
 
-module.exports.updatePasswordEmail = async (req) => {
-  const { email, password } = req.body;
+module.exports.updatePasswordById = async (req) => {
+  const { userId, password } = req.body;
   await validateFields(req.body, ["email", "password"]);
-  await validateEmail(email);
-  return userModel.updatePasswordEmail(email, password);
+  await validateId(userId);
+  return userModel.updatePasswordById(userId, password);
 };
 
 // 필수값 데이터 검증
@@ -64,9 +64,16 @@ const validateFields = (fields, required) => {
   }
 };
 
-// 이메일에 맞는 사용자 있는지 검증
-const validateEmail = async (email) => {
-  const user = await userModel.validEmail(email);
+// 이메일에 맞는 사용자 있는지 검증 -> Id로 변경 예정
+// const validateEmail = async (email) => {
+//   const user = await userModel.validEmail(email);
+//   if (!user) throw UserErrorCode.createUserNotFound();
+//   return user;
+// };
+
+// Id에 맞는 사용자가 있는지 검증
+const validateId = async (userId) => {
+  const user = await userModel.validId(userId);
   if (!user) throw UserErrorCode.createUserNotFound();
   return user;
 };
@@ -77,15 +84,17 @@ const validateNewEmail = async (email) => {
   if (exists) throw UserErrorCode.createEmailExists();
 };
 
-// board (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
-module.exports.setUserInfoByEmail = async (board) => {
-  return userModel.setUserInfoByEmail(board);
-};
 
-// board list (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
-module.exports.setUserInfoInListByEmail = async (board) => {
-  await Promise.all(
-    Object.keys(board).map((key) => userModel.setUserInfoByEmail(board[key])),
-  );
-  return board;
-};
+// 아래 내용은 boardService에서 join으로 대체할 예정
+// // board (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
+// module.exports.setUserInfoByEmail = async (board) => {
+//   return userModel.setUserInfoByEmail(board);
+// };
+//
+// // board list (post, comment)를 받아 email에 맞는 닉네임을 추가하는 과정
+// module.exports.setUserInfoInListByEmail = async (board) => {
+//   await Promise.all(
+//     Object.keys(board).map((key) => userModel.setUserInfoByEmail(board[key])),
+//   );
+//   return board;
+// };

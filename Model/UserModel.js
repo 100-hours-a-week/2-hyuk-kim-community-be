@@ -89,7 +89,7 @@ class UserModel extends CommonModel {
         return result.affectedRows;
     }
 
-    async updatePasswordId(userId, password) {
+    async updatePasswordById(userId, password) {
         const result = await this.executeQuery(
             `UPDATE ${this.tableName} SET password = ? WHERE id = ?`,
             [password, userId]

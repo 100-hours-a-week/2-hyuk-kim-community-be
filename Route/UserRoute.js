@@ -8,8 +8,8 @@ userRoute.post("/auth/login", userController.login); // O
 userRoute.post("/auth/logout", userController.logout);
 userRoute.post("/users/signup", userController.signup); // O
 userRoute.delete("/users/", userController.signout); // O
-userRoute.get("/users/nickname", userController.getNicknameByEmail); // O
-userRoute.patch("/users/nickname", userController.updateNicknameByEmail); // O
-userRoute.patch("/users/password", userController.updatePasswordByEmail); // O
+userRoute.get("/users/nickname", userController.getNicknameById); // O
+userRoute.patch("/users/nickname", userController.updateNicknameById); // O
+userRoute.patch("/users/password", userController.updatePasswordById); // O
 
 module.exports = userRoute;
