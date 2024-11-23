@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 dotenv.config({path: `.env.${process.env.NODE_ENV}`});
 const express = require("express");
 const cors = require("cors");
-const errorMiddleware = require("./middlewares/ErrorMiddleware");
+const errorMiddleware = require("./middlewares/errorMiddleware");
 const loggingMiddleware = require("./middlewares/loggingMiddleware");
 const authMiddleware = require("./middlewares/authMiddleware");
 const app = express();
