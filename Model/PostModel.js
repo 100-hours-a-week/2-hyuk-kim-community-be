@@ -1,5 +1,5 @@
 const CommonModel = require('./CommonModel');
-const { formatDate } = require("../utils/DateManager");
+const { formatDate } = require("../utils/dateManager");
 
 class PostModel extends CommonModel {
     constructor() {

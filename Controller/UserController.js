@@ -1,5 +1,5 @@
 const apiResponse = require("../common/responses/apiResponse");
-const UserSuccessCode = require("../common/responses/UserSuccessCode");
+const UserSuccessCode = require("../common/responses/userSuccessCode");
 const userService = require("../Service/UserService");
 const { v4: uuidv4 } = require("uuid");
 const {
