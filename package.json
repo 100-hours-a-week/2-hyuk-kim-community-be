@@ -23,12 +23,15 @@
   "description": "KCN Community Express Server",
   "main": "app.js",
   "scripts": {
-    "start": "NODE_ENV=develop node app.js",
+    "start": "pm2 start ./config/pm2.config.js --only back-product",
+    "dev": "pm2 start ./config/pm2.config.js --only back-dev",
+    "stop": "pm2 stop all",
+    "monitor": "pm2 monit",
+
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --config ./config/eslint.config.js",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ./config/prettier.config.js .",
-    "dev": "NODE_ENV=develop node app.js"
+    "format": "prettier --write ./config/prettier.config.js ."
   },
   "author": "",
   "license": "ISC",
