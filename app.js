@@ -15,7 +15,10 @@ const port = process.env.PORT || 3001;
 
 // CORS 설정
 const corsOptions = {
-  origin: "http://localhost:3000", // 허용할 출처
+    origin: [
+        'http://localhost:3000',
+        'http://3.39.229.64:3000'
+    ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // 허용할 HTTP 메서드
   credentials: true, // 인증 정보 허용
 };
