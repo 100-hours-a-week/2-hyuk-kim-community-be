@@ -2,6 +2,7 @@
 const UserModel = require("../Model/UserModel");
 const userModel = new UserModel();
 const UserErrorCode = require("../common/errors/userErrorCode");
+const {uploadImage, getImageUrl} = require("../utils/imageUploader");
 
 /*
 검증 로직 추가 필요함!
@@ -19,7 +20,14 @@ module.exports.login = async (req) => {
   if (!passwordMatch) {
     throw UserErrorCode.createInvalidCredentials();
   }
-  return user.id;
+
+  const image = await getImageUrl(user.profile);
+
+  console.log(image);
+  return {
+    userId: user.id,
+    profile: image
+  };
 };
 
 module.exports.logout = async (req) => {};
@@ -27,9 +35,13 @@ module.exports.logout = async (req) => {};
 module.exports.signup = async (req) => {
   console.log(req.body);
   const { email, password, nickname } = req.body;
+  console.log(`email: ${email} password: ${password}`);
   await validateFields(req.body, ["email", "password", "nickname"]);
   await validateNewEmail(email);
-  if(!await userModel.signup(email, password, nickname)) {
+
+  const imageUrl = await uploadImage(req.file, "profile");
+
+  if(!await userModel.signup(email, password, nickname, imageUrl)) {
       throw UserErrorCode.createUnexpectedError();
   }
   return {}// TF 검증 필요!

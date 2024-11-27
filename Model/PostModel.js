@@ -19,7 +19,7 @@ class PostModel extends CommonModel {
              GROUP BY p.id, u.nickname
              ORDER BY p.createat DESC`
         );
-        console.log(result);
+        // console.log(result);
         return Object.values(result).map(post => ({
             ...post,
         // date: post.createat = formatDate(post.createat),

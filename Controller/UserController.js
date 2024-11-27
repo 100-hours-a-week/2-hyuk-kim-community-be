@@ -24,10 +24,10 @@ const { setAccessToken } = require("../utils/provider/cookieProvider");
 
 module.exports.login = async function (req, res, next) {
   try {
-    const userId = await userService.login(req);
-    req.session.userId = userId; // localhost 프론트로 테스트시 주석처리!!
+    const data = await userService.login(req);
+    req.session.userId = data.userId; // localhost 프론트로 테스트시 주석처리!!
     const sessionId = req.session.id;
-    const successResponse = UserSuccessCode.createLoginSuccess({ userId, sessionId});
+    const successResponse = UserSuccessCode.createLoginSuccess({ ...data, sessionId});
     apiResponse.success(req, res, successResponse);
   } catch (error) {
     next(error);

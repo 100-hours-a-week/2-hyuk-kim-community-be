@@ -25,10 +25,10 @@ class UserModel extends CommonModel {
         // 이후 토큰, 세션 인증인가시 구현!
     }
 
-    async signup(email, password, nickname) {
+    async signup(email, password, nickname, imageUrl) {
         const result = await this.executeQuery(
-            `INSERT INTO ${this.tableName} (email, password, nickname) VALUES (?, ?, ?)`,
-            [email, password, nickname]
+            `INSERT INTO ${this.tableName} (email, password, nickname, profile) VALUES (?, ?, ?, ?)`,
+            [email, password, nickname, imageUrl]
         );
         return result.affectedRows > 0;
     }
