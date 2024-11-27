@@ -12,7 +12,7 @@ boardRoute.patch("/posts/:postId", authMiddleware, boardController.updatePostByP
 boardRoute.delete("/posts/:postId", authMiddleware, boardController.deletePostByPostId);
 
 boardRoute.post("/comments", authMiddleware, boardController.createComment);
-boardRoute.put(
+boardRoute.patch(
   "/comments/:commentId",
   authMiddleware,
   boardController.updateCommentByCommentId,

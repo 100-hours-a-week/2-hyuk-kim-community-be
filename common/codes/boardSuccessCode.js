@@ -1,4 +1,4 @@
-const { OK, Created } = require("./CustomSuccess");
+const { OK, Created } = require("../responses/CustomSuccess");
 
 const SuccessMessages = {
   POST_CREATED: "게시글 작성 성공",

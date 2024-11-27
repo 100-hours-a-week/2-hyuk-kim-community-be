@@ -1,4 +1,4 @@
-const { OK, Created } = require("./CustomSuccess");
+const { OK, Created } = require("../responses/CustomSuccess");
 
 const SuccessMessages = {
   LOGIN_SUCCESS: "로그인 성공",
@@ -11,6 +11,7 @@ const SuccessMessages = {
   USER_CREATED: "회원가입 성공",
 };
 
+// [jeff] 굿! 굳!
 const UserSuccessCode = {
   createLoginSuccess: (data) => new OK(SuccessMessages.LOGIN_SUCCESS, data),
   createLogoutSuccess: () => new OK(SuccessMessages.LOGOUT_SUCCESS),
