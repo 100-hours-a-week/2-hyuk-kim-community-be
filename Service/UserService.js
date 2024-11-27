@@ -20,10 +20,8 @@ module.exports.login = async (req) => {
   if (!passwordMatch) {
     throw UserErrorCode.createInvalidCredentials();
   }
-
   const image = await getImageUrl(user.profile);
-
-  console.log(image);
+  // console.log(`image : ${image}`);
   return {
     userId: user.id,
     profile: image

@@ -36,7 +36,7 @@ module.exports.uploadImage = async (file, type) => {
 
 module.exports.getImageUrl = async (imageId) => {
     try {
-        const response = await fetch(`${url.IMAGE_UPLOAD}/${imageId}`);
+        const response = await fetch(`${url.IMAGE_GET}/${imageId}`);
         // const buffer = await response.arrayBuffer();
         // 이미지 데이터를 arrayBuffer로 받기
         const imageBuffer = await response.arrayBuffer();
