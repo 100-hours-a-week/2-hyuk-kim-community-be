@@ -1,4 +1,5 @@
-const multer = require('multer');
+const multer = require("multer");
+const {ImageErrorCode} = require("../common/errors/imageErrorCode");
 
 const memoryStorage = multer.memoryStorage();
 
@@ -8,7 +9,7 @@ const fileFilter = (req, file, cb) => {
     if (allowedTypes.includes(file.mimetype)) {
         cb(null, true);
     } else {
-        cb(new Error('지원하지 않는 파일 형식입니다. (jpeg, png, gif만 가능)'), false);
+        cb(ImageErrorCode.createInvalidFormat(), false);
     }
 };
 
@@ -22,10 +23,9 @@ const multerConfig = {
     fileFilter
 };
 
-// multer 미들웨어 생성
+// multer 미들웨어 생성 -> 이걸 route에서 사용하면 req.file로 받아줌
 const upload = multer(multerConfig);
 
 module.exports = {
-    upload,
-    multerConfig
+    upload
 };

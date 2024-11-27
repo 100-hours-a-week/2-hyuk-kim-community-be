@@ -1,6 +1,7 @@
 const BoardErrorCode = require("../common/errors/boardErrorCode");
 const postModel = require("../Model/PostModel");
 const commentModel = require("../Model/CommentModel");
+const {uploadImage} = require("../utils/imageUploader");
 
 // 페이징 추가 필요!
 module.exports.getPostList = async () => {
@@ -8,14 +9,16 @@ module.exports.getPostList = async () => {
   // for (const key of Object.keys(list)) {
   //   list[key].comment = (await commentModel.getCommentListByPostId(key)) || {};
   // }
-  console.log(list);
+  // console.log(list);
   return list;
 };
 
 module.exports.createPost = async (req) => {
   const { title, content, userId } = req.body;
   await validateFields(req.body, ["title", "content", "userId"]);
-  return postModel.createPost(title, content, userId);
+  // const imageUrl = await uploadImage(req.file);
+  console.log(`image: ${req.file}`);
+  return postModel.createPost(title, content, userId, imageUrl);
 };
 
 module.exports.getPostByPostId = async (req) => {

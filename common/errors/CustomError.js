@@ -30,6 +30,12 @@ class ConflictError extends CustomError {
   }
 }
 
+class ServiceError extends CustomError {
+  constructor(message = "Internal Server Error") {
+    super(message, 500);
+  }
+}
+
 class InternalServerError extends CustomError {
   constructor(message = "Internal Server Error") {
     super(message, 500);
@@ -41,5 +47,6 @@ module.exports = {
   UnauthorizedError,
   NotFoundError,
   ConflictError,
+  ServiceError,
   InternalServerError,
 };
