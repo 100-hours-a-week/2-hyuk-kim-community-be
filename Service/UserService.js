@@ -1,7 +1,7 @@
 // const User = require("../Model/user");
 const UserModel = require("../Model/UserModel");
 const userModel = new UserModel();
-const UserErrorCode = require("../common/errors/userErrorCode");
+const UserErrorCode = require("../common/codes/userErrorCode");
 
 /*
 검증 로직 추가 필요함!
