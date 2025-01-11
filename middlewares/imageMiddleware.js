@@ -17,7 +17,7 @@ const fileFilter = (req, file, cb) => {
 const multerConfig = {
     storage: memoryStorage,
     limits: {
-        fileSize: 5 * 1024 * 1024, // 5MB
+        fileSize: 15 * 1024 * 1024, // 15MB
         files: 1 // 파일 개수 제한 -> 이미지 늘릴 때 대비해서 명시해두기!
     },
     fileFilter

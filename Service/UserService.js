@@ -20,11 +20,9 @@ module.exports.login = async (req) => {
   if (!passwordMatch) {
     throw UserErrorCode.createInvalidCredentials();
   }
-  const image = await getImageUrl(user.profile);
-  // console.log(`image : ${image}`);
   return {
     userId: user.id,
-    profile: image
+    profile: user.profile,
   };
 };
 
@@ -36,6 +34,7 @@ module.exports.signup = async (req) => {
   console.log(`email: ${email} password: ${password}`);
   await validateFields(req.body, ["email", "password", "nickname"]);
   await validateNewEmail(email);
+
 
   const imageUrl = await uploadImage(req.file, "profile");
 
@@ -52,24 +51,36 @@ module.exports.signout = async (req) => {
   return userModel.signout(userId);
 };
 
-module.exports.getNicknameById = async (req) => {
-  const { userId }  = req.body;
+module.exports.getProfile = async (req) => {
+  const userId  = req.user?.userId;
   console.log(req.body);
   console.log(userId);
-  await validateFields(req.body, ["userId"]);
+  await validateFields(req.params, ["userId"]);
   await validateId(userId);
-  return userModel.getNicknameById(userId);
+  return userModel.getProfile(userId);
 };
 
-module.exports.updateNicknameById = async (req) => {
-  const { userId, nickname } = req.body;
-  await validateFields(req.body, ["userId", "nickname"]);
-  await validateId(userId);
-  return userModel.updateNicknameById(userId, nickname);
+module.exports.updateProfile = async (req) => {
+  const userId  = req.user?.userId;
+  const { nickname } = req.body;
+  const updates = {};
+  const image = req.file;
+  if (nickname !== "") {
+    await validateFields({ userId, nickname }, ["userId", "nickname"]);
+    updates.nickname = nickname;
+  }
+
+  if (image) {
+    updates.image = await uploadImage(req.file, "profile");
+  }
+
+  await userModel.updateProfile(userId, updates);
+  return {profile: updates.image};
 };
 
 module.exports.updatePasswordById = async (req) => {
-  const { userId, password } = req.body;
+  const userId = req.user?.userId;
+  const { password } = req.body;
   await validateFields(req.body, ["userId", "password"]);
   await validateId(userId);
   return userModel.updatePasswordById(userId, password);

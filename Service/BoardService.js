@@ -4,20 +4,27 @@ const commentModel = require("../Model/CommentModel");
 const {uploadImage} = require("../utils/imageUploader");
 
 // 페이징 추가 필요!
-module.exports.getPostList = async () => {
-  const list = await postModel.getPostList(); // 댓글 수 쿼리로 받기
-  // for (const key of Object.keys(list)) {
-  //   list[key].comment = (await commentModel.getCommentListByPostId(key)) || {};
-  // }
-  // console.log(list);
-  return list;
+module.exports.getPostList = async (req) => {
+  const { page = 1 , limit = 10 } = req.query;
+  const offset = (page - 1) * limit;
+  const { posts, totalCount } = await postModel.getPostList(offset, limit);
+  const hasMore = totalCount > offset + posts.length;
+
+  return {
+    posts,
+    totalCount,
+    hasMore
+  };
 };
 
 module.exports.createPost = async (req) => {
-  const { title, content, userId } = req.body;
-  await validateFields(req.body, ["title", "content", "userId"]);
-  // const imageUrl = await uploadImage(req.file);
-  console.log(`image: ${req.file}`);
+  const userId  = req.user?.userId;
+  const { title, content } = req.body.post;
+  let imageUrl;
+  if (req.file) {
+    imageUrl = await uploadImage(req.file, "board");
+  }
+  console.log(`imageUrl: ${imageUrl}`);
   return postModel.createPost(title, content, userId, imageUrl);
 };
 

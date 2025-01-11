@@ -1,5 +1,4 @@
-const dotenv = require('dotenv');
-dotenv.config({path: `.env.${process.env.NODE_ENV}`});
+require('dotenv').config({path: `.env.${process.env.NODE_ENV}`});
 const express = require("express");
 const app = express();
 const cors = require("cors");
@@ -42,6 +41,7 @@ app.use(
   }),
 );
 
+app.use(express.json({ limit: '15mb' }));
 app.use(cookieParser());
 app.use(loggingMiddleware);
 app.use("/api", boardRouter);

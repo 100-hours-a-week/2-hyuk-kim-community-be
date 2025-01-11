@@ -6,7 +6,45 @@ class PostModel extends CommonModel {
         super('post');
     }
 
-    async getPostList() {
+    async getPostList(offset, limit) {
+        const [posts, countResult] = await Promise.all([
+            this.executeQuery(
+                `SELECT
+                     p.*,
+                     u.nickname,
+                     u.profile,
+                     COUNT(DISTINCT c.id) as countComments
+                 FROM ${this.tableName} p
+                          LEFT JOIN users u ON p.user_id = u.id
+                          LEFT JOIN comment c ON p.id = c.post_id AND c.deleteat IS NULL
+                 WHERE p.deleteat IS NULL
+                 GROUP BY p.id, u.nickname, u.profile
+                 ORDER BY p.createat DESC
+                     LIMIT ${parseInt(limit)} OFFSET ${parseInt(offset)}`
+            ),
+            this.executeQuery(
+                `SELECT COUNT(*) as total
+                 FROM ${this.tableName}
+                 WHERE deleteat IS NULL`
+            )
+        ]);
+
+        return {
+            posts: posts.map(post => ({
+                ...post,
+                user: {
+                    nickname: post.nickname,
+                    profile: post.profile
+                },
+                countComments: Number(post.countComments),
+                nickname: undefined,  // 원래 위치의 nickname 제거
+                profile: undefined   // 원래 위치의 profile 제거
+            })),
+            totalCount: Number(countResult[0].total)
+        }
+    }
+
+    async getPostListBefore() {
         const result =  await this.executeQuery(
             `SELECT
                  p.*,
@@ -27,11 +65,11 @@ class PostModel extends CommonModel {
         }));
     }
 
-    async createPost(title, content, userId) {
+    async createPost(title, content, userId, imageUrl) {
         const result = await this.executeQuery(
-            `INSERT INTO ${this.tableName} (title, content, user_id, createat)
-             VALUES (?, ?, ?, Now())`,
-            [title, content, userId]
+            `INSERT INTO ${this.tableName} (title, content, user_id, createat, image)
+             VALUES (?, ?, ?, Now(), ?)`,
+            [title, content, userId, imageUrl]
         );
 
         // 게시글 업로드시 바로 생성한 게시물 받아오는 코드 -> 지금 이렇게 안 하네; 몰랐네; 이후 바꾸기 !!

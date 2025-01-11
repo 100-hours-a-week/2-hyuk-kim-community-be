@@ -42,23 +42,7 @@ class UserModel extends CommonModel {
         return result.affectedRows;
     }
 
-    // async signout(userId) {
-    //     const result = await this.executeQuery(
-    //         `UPDATE ${this.tableName} SET deleted_at = NOW() WHERE id = ?`,
-    //         [userId]
-    //     );
-    //     return result.affectedRows;
-    // }
-
-    async getNicknameByEmail(email) {
-        const rows = await this.executeQuery(
-            `SELECT nickname FROM ${this.tableName} WHERE email = ?`,
-            [email]
-        );
-        return rows[0]?.nickname;
-    }
-
-    async getNicknameById(userId) {
+    async getProfile(userId) {
         const rows = await this.executeQuery(
             `SELECT email, nickname FROM ${this.tableName} WHERE id = ?`,
             [userId]
@@ -66,28 +50,40 @@ class UserModel extends CommonModel {
         return rows[0];
     }
 
-    async updateNicknameEmail(email, nickname) {
-        const result = await this.executeQuery(
-            `UPDATE ${this.tableName} SET nickname = ? WHERE email = ?`,
-            [nickname, email]
-        );
-        return result.affectedRows;
-    }
+    async updateProfile(userId, updates) {
+        // 빈 문자열이나 undefined 체크
+        let updateFields = [];
+        let values = [];
 
-    async updateNicknameById(userId, nickname) {
-        const result = await this.executeQuery(
-            `UPDATE ${this.tableName} SET nickname = ? WHERE id = ?`,
-            [nickname, userId]
-        );
-        return result.affectedRows;
-    }
+        const { nickname, profile } = updates;
 
-    async updatePasswordEmail(email, password) {
-        const result = await this.executeQuery(
-            `UPDATE ${this.tableName} SET password = ? WHERE email = ?`,
-            [password, email]
-        );
-        return result.affectedRows;
+        if (nickname && typeof nickname === 'string') {
+            // nickname이 객체가 아닌 문자열인지 확인
+            updateFields.push("nickname = ?");
+            values.push(nickname);
+        }
+
+        console.log(`profile: ${profile}`);
+        if (profile && typeof profile === 'string') {
+            updateFields.push("profile = ?");
+            values.push(profile);
+        }
+
+        // 업데이트할 필드가 없으면 early return
+        if (updateFields.length === 0) {
+            return { message: "No fields to update" };
+        }
+
+        const updateQuery = `
+            UPDATE ${this.tableName}
+            SET ${updateFields.join(", ")}
+            WHERE id = ?
+        `;
+
+        values.push(userId);
+
+        await this.executeQuery(updateQuery, values);
+        return { nickname, profile };
     }
 
     async updatePasswordById(userId, password) {
@@ -95,30 +91,9 @@ class UserModel extends CommonModel {
             `UPDATE ${this.tableName} SET password = ? WHERE id = ?`,
             [password, userId]
         );
+        console.log(result.affectedRows);
         return result.affectedRows;
     }
-
-    // async setUserInfoByEmail(board) {
-    //     // 게시글 작성자의 닉네임 조회
-    //     const authorRows = await this.executeQuery(
-    //         `SELECT nickname FROM ${this.tableName} WHERE email = ?`,
-    //         [board.email]
-    //     );
-    //     board.nickname = authorRows[0]?.nickname || "(알 수 없음)";
-    //
-    //     // 댓글 작성자들의 닉네임 조회
-    //     for (const commentKey in board.comment) {
-    //         const commentEmail = board.comment[commentKey].email;
-    //         const commentRows = await this.executeQuery(
-    //             `SELECT nickname FROM ${this.tableName} WHERE email = ?`,
-    //             [commentEmail]
-    //         );
-    //         if (commentRows[0]?.nickname) {
-    //             board.comment[commentKey].nickname = commentRows[0].nickname;
-    //         }
-    //     }
-    //     return board;
-    // }
 }
 
 module.exports = UserModel;
