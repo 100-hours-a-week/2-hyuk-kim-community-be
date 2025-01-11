@@ -84,8 +84,6 @@ class UserModel extends CommonModel {
 
         values.push(userId);
 
-        console.log(`updateQuery: ${updateQuery}`);
-        console.log(`values: ${values}`);
         await this.executeQuery(updateQuery, values);
         return { nickname, profile };
     }
