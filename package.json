@@ -1,6 +1,29 @@
 {
+  "name": "communitybe",
+  "version": "0.0.1",
+  "description": "KCN Community Express Server",
+  "main": "app.js",
+  "scripts": {
+    "start": "pm2 start ./config/pm2.config.js --only back-product",
+    "stop": "pm2 stop all",
+    "monitor": "pm2 monit",
+
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint --config ./config/eslint.config.js",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write ./config/prettier.config.js .",
+    "dev": "NODE_ENV=develop node app.js"
+  },
+  "author": "hyuk.kim",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1"
+  },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.722.0",
     "@eslint/eslintrc": "^3.1.0",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "connect-timeout": "^1.9.0",
@@ -14,29 +37,10 @@
     "jsonwebtoken": "^9.0.2",
     "mariadb": "^3.4.0",
     "moment": "^2.30.1",
+    "multer": "^1.4.5-lts.1",
+    "path": "^0.12.7",
     "pm2": "^5.4.3",
     "prettier": "^3.3.3",
-    "uuid": "^11.0.2"
-  },
-  "name": "communitybe",
-  "version": "0.0.1",
-  "description": "KCN Community Express Server",
-  "main": "app.js",
-  "scripts": {
-    "start": "pm2 start ./config/pm2.config.js --only back-product",
-    "dev": "pm2 start ./config/pm2.config.js --only back-dev",
-    "stop": "pm2 stop all",
-    "monitor": "pm2 monit",
-
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint --config ./config/eslint.config.js",
-    "lint:fix": "eslint . --fix",
-    "format": "prettier --write ./config/prettier.config.js ."
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1"
+    "uuid": "^11.0.3"
   }
 }
