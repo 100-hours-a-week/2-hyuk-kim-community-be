@@ -71,11 +71,12 @@ module.exports.updateProfile = async (req) => {
   }
 
   if (image) {
-    updates.image = await uploadImage(req.file, "profile");
+    updates.profile = await uploadImage(req.file, "profile");
   }
 
+  console.log("updates.image!!: ", updates.image);
   await userModel.updateProfile(userId, updates);
-  return {profile: updates.image};
+  return {profile: updates.profile};
 };
 
 module.exports.updatePasswordById = async (req) => {

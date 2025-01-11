@@ -72,15 +72,6 @@ class PostModel extends CommonModel {
             [title, content, userId, imageUrl]
         );
 
-        // 게시글 업로드시 바로 생성한 게시물 받아오는 코드 -> 지금 이렇게 안 하네; 몰랐네; 이후 바꾸기 !!
-        // const [newPost] = await this.executeQuery(
-        //     `SELECT p.*, u.nickname
-        //      FROM ${this.tableName} p
-        //      LEFT JOIN users u ON p.user_id = u.id
-        //      WHERE p.id = ?`,
-        //     [result.insertId]
-        // );
-        // return newPost;
         return Number(result.insertId);;
     }
 

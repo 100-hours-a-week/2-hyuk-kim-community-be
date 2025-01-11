@@ -59,12 +59,14 @@ class UserModel extends CommonModel {
 
         if (nickname && typeof nickname === 'string') {
             // nickname이 객체가 아닌 문자열인지 확인
+            console.log(`nickname good!`);
             updateFields.push("nickname = ?");
             values.push(nickname);
         }
 
         console.log(`profile: ${profile}`);
         if (profile && typeof profile === 'string') {
+            console.log(`profile good!`);
             updateFields.push("profile = ?");
             values.push(profile);
         }
@@ -82,6 +84,8 @@ class UserModel extends CommonModel {
 
         values.push(userId);
 
+        console.log(`updateQuery: ${updateQuery}`);
+        console.log(`values: ${values}`);
         await this.executeQuery(updateQuery, values);
         return { nickname, profile };
     }
