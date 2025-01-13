@@ -75,21 +75,75 @@ class PostModel extends CommonModel {
         return Number(result.insertId);;
     }
 
-    async getPostByPostId(postId) {
+    async getPostByPostId(postId, userId) {
         await this.executeQuery(
-            `UPDATE ${this.tableName}
-             SET count_view = count_view + 1
-             WHERE id = ?`,
+            `UPDATE post
+         SET count_view = count_view + 1
+         WHERE id = ? AND deleteat IS NULL`,
             [postId]
         );
+
         const rows = await this.executeQuery(
-            `SELECT p.*, u.email, u.nickname 
-            FROM ${this.tableName} p 
-            LEFT JOIN users u ON p.user_id = u.id 
-            WHERE p.id = ?`,
-            [postId]
+            `SELECT 
+            p.id,
+            p.title,
+            p.content,
+            p.image,
+            p.createat,
+            p.count_view as countView,
+            u.nickname,
+            u.profile,
+            CASE WHEN p.user_id = ? THEN TRUE ELSE FALSE END as isMyPost,
+            CAST((SELECT COUNT(*) FROM likes WHERE post_id = p.id) AS UNSIGNED) as countLike,  -- 여기를 수정
+            ${userId ?
+                `CASE WHEN EXISTS (
+                    SELECT 1 FROM likes 
+                    WHERE post_id = p.id AND user_id = ?
+                ) THEN TRUE ELSE FALSE END`
+                : 'FALSE'
+            } as isLike,
+            (
+                SELECT JSON_ARRAYAGG(
+                    JSON_OBJECT(
+                        'id', c.id,
+                        'content', c.content,
+                        'date', DATE_FORMAT(c.createat, '%Y.%m.%d %H:%i'),
+                        'user', JSON_OBJECT(
+                            'nickname', cu.nickname,
+                            'profile', cu.profile
+                        ),
+                        'isAuthorComments', CASE WHEN c.user_id = p.user_id THEN TRUE ELSE FALSE END,
+                        'isMyComment', CASE WHEN c.user_id = ? THEN TRUE ELSE FALSE END
+                    )
+                )
+                FROM comment c
+                LEFT JOIN users cu ON c.user_id = cu.id
+                WHERE c.post_id = p.id AND c.deleteat IS NULL
+            ) as commentList
+        FROM post p
+        LEFT JOIN users u ON p.user_id = u.id
+        WHERE p.id = ? AND p.deleteat IS NULL`,
+            userId ? [userId, userId, userId, postId] : [null, null, postId]
         );
-        return rows[0];
+
+        if (!rows[0]) return null;
+
+        const post = rows[0];
+        post.commentList = post.commentList || [];
+        post.user = {
+            nickname: post.nickname,
+            profile: post.profile
+        };
+
+        delete post.nickname;
+        delete post.profile;
+
+        // BigInt를 Number로 변환 (필요한 경우를 위한 안전장치)
+        if (typeof post.countLike === 'bigint') {
+            post.countLike = Number(post.countLike);
+        }
+
+        return post;
     }
 
     async getPostEditByPostId(postId) {

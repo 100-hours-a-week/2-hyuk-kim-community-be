@@ -29,14 +29,11 @@ module.exports.createPost = async (req) => {
 };
 
 module.exports.getPostByPostId = async (req) => {
+  const userId = req.user?.userId;
   const postId = req.params.postId;
   await validateFields(req.params, ["postId"]);
   await validatePost(postId);
-  const result = await postModel.getPostByPostId(postId);
-  result["postId"] = req.params.postId;
-  result["comment"] = (await commentModel.getCommentListByPostId(postId));
-    // (await commentModel.getCommentListByPostId(req.params.postId)) || {};
-  return result;
+  return await postModel.getPostByPostId(postId, userId);
 };
 
 // 상태 관리로 상세페이지에서 넘겨주면 되니까 리액트로 변경시 없어질 API!

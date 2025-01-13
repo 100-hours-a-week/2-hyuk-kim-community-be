@@ -5,8 +5,8 @@ const authMiddleware = require("./../middlewares/authMiddleware.js");
 const { upload } = require('../middlewares/imageMiddleware');
 //authMiddleware,
 boardRoute.get("/posts", boardController.getPostList); // O
-boardRoute.get("/posts/:postId", boardController.getPostByPostId); // O
-boardRoute.get("/posts/:postId/edit", boardController.getPostEditByPostId); // O
+boardRoute.get("/posts/:postId", authMiddleware, boardController.getPostByPostId); // O
+boardRoute.get("/posts/:postId/edit", authMiddleware, boardController.getPostEditByPostId); // O
 
 boardRoute.post("/posts", upload.single('image'), authMiddleware, boardController.createPost);
 boardRoute.patch("/posts/:postId", upload.single('image'), authMiddleware, boardController.updatePostByPostId);

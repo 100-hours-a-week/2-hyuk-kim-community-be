@@ -35,12 +35,33 @@ class CommentModel extends CommonModel {
     }
 
     async createComment(postId, content, userId) {
+        // 댓글 생성
         const result = await this.executeQuery(
             `INSERT INTO ${this.tableName} (post_id, content, user_id, createat)
              VALUES (?, ?, ?, NOW())`,
             [postId, content, userId]
         );
-        return Number(result.insertId);
+
+        // 생성된 댓글의 전체 정보를 조회
+        const [newComment] = await this.executeQuery(
+            `SELECT
+                 c.id,
+                 c.content,
+                 DATE_FORMAT(c.createat, '%Y.%m.%d %H:%i') as date,
+            JSON_OBJECT(
+                'nickname', u.nickname,
+                'profile', u.profile
+            ) as user,
+            CASE WHEN c.user_id = p.user_id THEN TRUE ELSE FALSE END as isAuthorComments,
+            CASE WHEN c.user_id = ? THEN TRUE ELSE FALSE END as isMyComment
+        FROM ${this.tableName} c
+            LEFT JOIN users u ON c.user_id = u.id
+            LEFT JOIN post p ON c.post_id = p.id
+            WHERE c.id = ?`,
+            [userId, result.insertId]
+        );
+
+        return newComment;  // JSON.parse 제거
     }
 
     async updateComment(commentId, content) {
