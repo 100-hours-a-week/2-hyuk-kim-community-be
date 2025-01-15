@@ -34,6 +34,17 @@ module.exports.getPostByPostId = async (req, res, next) => {
   }
 };
 
+// 페이징 때문에 필요한 작업임!!
+module.exports.getCommentListByPostId = async (req, res, next) => {
+  try {
+    const result = await boardService.getCommentListByPostId(req);
+    const successResponse = BoardSuccessCode.createCommentFetched(result); // !!!
+    apiResponse.success(req, res, successResponse);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports.getPostEditByPostId = async (req, res, next) => {
   try {
     const result = await boardService.getPostEditByPostId(req);
@@ -43,17 +54,6 @@ module.exports.getPostEditByPostId = async (req, res, next) => {
     next(error);
   }
 };
-
-// 얘는 게시글 상세보기에 추가되어야하는 기능 !!
-// module.exports.patchPostViews = async (req, res, next) => {
-//   try {
-//     const result = await boardService.patchPostViews(req);
-//     const successResponse = BoardSuccessCode.(result); // !!!
-//     apiResponse.success(req, res, successResponse);
-//   } catch (error) {
-//     next(error);
-//   }
-// };
 
 module.exports.updatePostByPostId = async (req, res, next) => {
   try {
@@ -85,17 +85,6 @@ module.exports.createComment = async (req, res, next) => {
   }
 };
 
-// 페이징 때문에 필요한 작업임!! -> 현재는 사용하지 않음!!
-module.exports.getCommentListByPostId = async (req, res, next) => {
-  try {
-    const result = await boardService.getCommentListByPostId(req);
-    // const successResponse = BoardSuccessCode.(result); // !!!
-    apiResponse.success(req, res, successResponse);
-  } catch (error) {
-    next(error);
-  }
-};
-
 module.exports.updateCommentByCommentId = async (req, res, next) => {
   try {
     const result = await boardService.updateCommentByCommentId(req);
@@ -115,3 +104,24 @@ module.exports.deleteCommentByCommentId = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.likePost = async (req, res, next) => {
+  try {
+    await boardService.likePost(req);
+    const successResponse = BoardSuccessCode.createLikePost();
+    apiResponse.success(req, res, successResponse);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.unLikePost = async (req, res, next) => {
+  try {
+    await boardService.unLikePost(req);
+    const successResponse = BoardSuccessCode.createUnLikePost();
+    apiResponse.success(req, res, successResponse);
+  } catch (error) {
+    next(error);
+  }
+};
+

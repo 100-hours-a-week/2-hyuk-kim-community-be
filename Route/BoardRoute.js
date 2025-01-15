@@ -4,7 +4,7 @@ const boardController = require("./../Controller/BoardController.js");
 const authMiddleware = require("./../middlewares/authMiddleware.js");
 const { upload } = require('../middlewares/imageMiddleware');
 //authMiddleware,
-boardRoute.get("/posts", boardController.getPostList); // O
+boardRoute.get("/posts", authMiddleware, boardController.getPostList); // O
 boardRoute.get("/posts/:postId", authMiddleware, boardController.getPostByPostId); // O
 boardRoute.get("/posts/:postId/edit", authMiddleware, boardController.getPostEditByPostId); // O
 
@@ -23,5 +23,8 @@ boardRoute.delete(
   authMiddleware,
   boardController.deleteCommentByCommentId,
 );
+
+boardRoute.post("/posts/like/:postId", authMiddleware, boardController.likePost);
+boardRoute.post("/posts/unlike/:postId", authMiddleware, boardController.unLikePost);
 
 module.exports = boardRoute;
