@@ -55,7 +55,7 @@ module.exports.getProfile = async (req) => {
   const userId  = req.user?.userId;
   console.log(req.body);
   console.log(userId);
-  await validateFields(req.params, ["userId"]);
+  // await validateFields(req.params, ["userId"]);
   await validateId(userId);
   return userModel.getProfile(userId);
 };
