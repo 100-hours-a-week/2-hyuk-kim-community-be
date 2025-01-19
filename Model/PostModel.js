@@ -152,7 +152,7 @@ class PostModel extends CommonModel {
             u.nickname,
             u.profile,
             CASE WHEN p.user_id = ? THEN TRUE ELSE FALSE END as isMyPost,
-            CAST((SELECT COUNT(*) FROM likes WHERE post_id = p.id) AS UNSIGNED) as countLike,  -- 여기를 수정
+            CAST((SELECT COUNT(*) FROM likes WHERE post_id = p.id) AS UNSIGNED) as countLike, 
             ${userId ?
                 `CASE WHEN EXISTS (
                     SELECT 1 FROM likes 
