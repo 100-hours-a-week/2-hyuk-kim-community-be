@@ -5,9 +5,9 @@
 
 ## 프로젝트 소개
 
-- 커뮤니티 프로젝트는 **HTML CSS JS**를 활용하여 커뮤니티 웹 애플리케이션을 구현한 프로젝트입니다.<br>
-- **Airbnb Code Convention**을 기준으로 코드 품질과 일관성을 유지하며 개발하였습니다. <br>
+- 커뮤니티 프로젝트는 **HTML CSS React**를 활용하여 커뮤니티 웹 애플리케이션을 구현한 프로젝트입니다.<br>
 - 이 프로젝트는 사용자 인증, 게시판, 댓글, 좋아요 기능 등 기본적인 커뮤니티 서비스 구현을 목표로 하고 있습니다.
+- 프론트엔드 저장소 : [2-hyuk-kim-community-fe](https://github.com/100-hours-a-week/2-hyuk-kim-community-fe)
   </br>
 
 ## 주요 기능
@@ -19,7 +19,7 @@
 ## 기술 스택
 
 - **Backend**: Express.js
-- **Database**: MariaDB - `추후 업데이트 예정`
+- **Database**: MariaDB
 - **Authentication**: JWT (JSON Web Token) + Session - `추후 업데이트 예정`
 
 ## 프로젝트 실행 방법
@@ -27,7 +27,7 @@
 ### 필수 환경
 
 - Node.js (최소 버전: 20.x)
-- MariaDB (로컬 서버 설치 또는 클라우드 DB 사용) - `추후 업데이트 예정`
+- MariaDB (로컬 서버 설치 또는 클라우드 DB 사용)
   </br> </br>
 
 ### 설치 방법
@@ -38,7 +38,7 @@
    ```
 
  </br>
- 
+
 2. 프로젝트 디렉터리로 이동 후 의존성을 설치합니다.
       ```bash
       cd ktb-community
@@ -52,6 +52,11 @@
     DB_PASSWORD=password
     DB_NAME=ktb_community
     JWT_SECRET=your-secret-key
+
+    AWS_ACCESS_KEY_ID=id
+    AWS_SECRET_ACCESS_KEY=key
+    AWS_REGION=ap-northeast-2
+    AWS_S3_BUCKET_NAME=bucket_name
     ```
 
  </br>
