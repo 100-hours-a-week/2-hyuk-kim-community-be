@@ -1,27 +1,21 @@
-require('dotenv').config({path: `.env.${process.env.NODE_ENV}`});
+const config = require("./config/config"); // 이 변수를 통해 설정 관련 상수를 한 곳에서 관리합니다.
+const port = config.PORT;
+
+// CORS 설정
+const corsOptions = {
+    origin: config.ALLOWED_ORIGINS, // [jeff] 환경 변수를 활용하여 허용할 Origin 관리
+    methods: config.ALLOWED_METHODS, // [jeff] 허용할 HTTP 메서드 정의
+    credentials: config.CREDENTIALS_ALLOWED, // [jeff] 일관성을 위해 이 값까지 몽창 config.js 에서 중앙관리
+};
 const express = require("express");
 const app = express();
 const cors = require("cors");
 const errorMiddleware = require("./middlewares/errorMiddleware");
 const loggingMiddleware = require("./middlewares/loggingMiddleware");
-const authMiddleware = require("./middlewares/authMiddleware");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./Route/UserRoute");
 const boardRouter = require("./Route/BoardRoute");
-
-const port = process.env.PORT || 3001;
-
-// CORS 설정
-const corsOptions = {
-    origin: [
-        'http://localhost:3000',
-        'http://3.39.229.64:3000'
-    ],
-  methods: "GET,HEAD,PUT,PATCH,POST,DELETE", // 허용할 HTTP 메서드
-  credentials: true, // 인증 정보 허용
-};
-
 
 // CORS 미들웨어 사용
 app.use(cors(corsOptions));
@@ -29,20 +23,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
-    secret: "your-secret-key", // 세션 ID를 암호화할 비밀키
+    secret: config.SESSION_SECRET,
     resave: false, // 세션을 매 요청마다 다시 저장할지 여부
     saveUninitialized: true, // 세션에 값이 없더라도 세션을 저장할지 여부
     cookie: {
-      httpOnly: true,
-      secure: false,  // localhost는 false
-      sameSite: 'lax',
-      maxAge: 24 * 60 * 60 * 1000
+      httpOnly: true, // XSS 방지를 위해 가급적 true로!
+      secure: config.COOKIE_SECURE,  // localhost는 false
+      sameSite: config.COOKIE_SAMESITE,
+      maxAge: config.COOKIE_MAX_AGE
     }
   }),
 );
 
 app.use(express.json({ limit: '15mb' }));
-app.use(cookieParser());
 app.use(loggingMiddleware);
 app.use("/api", boardRouter);
 app.use("/api", userRouter);

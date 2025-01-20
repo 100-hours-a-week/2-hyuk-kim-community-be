@@ -1,6 +1,6 @@
 const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { v4: uuidv4 } = require('uuid');
-const {ImageErrorCode} = require("../common/errors/imageErrorCode");
+const {ImageErrorCode} = require("../common/codes/imageErrorCode");
 
 // AWS S3 클라이언트 설정
 const s3Client = new S3Client({

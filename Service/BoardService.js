@@ -1,4 +1,4 @@
-const BoardErrorCode = require("../common/errors/boardErrorCode");
+const BoardErrorCode = require("../common/codes/boardErrorCode");
 const postModel = require("../Model/PostModel");
 const commentModel = require("../Model/CommentModel");
 const {uploadImage} = require("../utils/imageUploader");

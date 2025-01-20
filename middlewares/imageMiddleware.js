@@ -1,5 +1,5 @@
 const multer = require("multer");
-const {ImageErrorCode} = require("../common/errors/imageErrorCode");
+const {ImageErrorCode} = require("../common/codes/imageErrorCode");
 
 const memoryStorage = multer.memoryStorage();
 

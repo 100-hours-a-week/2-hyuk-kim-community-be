@@ -1,4 +1,4 @@
-const UserErrorCode = require("../common/errors/userErrorCode");
+const UserErrorCode = require("../common/codes/userErrorCode");
 
 const authMiddleware = (req, res, next) => {
     req.body.userId = req.headers.userid;

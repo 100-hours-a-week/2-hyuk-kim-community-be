@@ -1,5 +1,5 @@
 const apiResponse = require("../common/responses/apiResponse");
-const BoardSuccessCode = require("../common/responses/boardSuccessCode");
+const BoardSuccessCode = require("../common/codes/boardSuccessCode");
 const boardService = require("../Service/BoardService");
 const userService = require("../Service/UserService");
 

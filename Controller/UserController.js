@@ -1,12 +1,7 @@
 const apiResponse = require("../common/responses/apiResponse");
-const UserSuccessCode = require("../common/responses/userSuccessCode");
+const UserSuccessCode = require("../common/codes/userSuccessCode");
 const userService = require("../Service/UserService");
 const { v4: uuidv4 } = require("uuid");
-const {
-  generateRefreshToken,
-  generateAccessToken,
-} = require("../utils/provider/jwtProvider");
-const { setAccessToken } = require("../utils/provider/cookieProvider");
 
 module.exports.login = async function (req, res, next) {
   try {
@@ -76,5 +71,3 @@ module.exports.updatePasswordById = async function (req, res, next) {
     next(error);
   }
 };
-
-module.exports = this;

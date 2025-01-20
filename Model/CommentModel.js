@@ -6,6 +6,7 @@ class CommentModel extends CommonModel {
         super('comment');
     }
 
+    // 댓글 페이지네이션을 위한 구현 => 다음 업데이트 적용 예정
     async getCommentListByPostId(postId) {
         const result = this.executeQuery(
             `SELECT c.*, u.nickname 

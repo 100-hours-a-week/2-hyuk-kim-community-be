@@ -1,6 +1,4 @@
 const CommonModel = require('./CommonModel');
-const { formatDate } = require("../utils/dateManager");
-const {post} = require("axios");
 
 class PostModel extends CommonModel {
     constructor() {
@@ -108,27 +106,6 @@ class PostModel extends CommonModel {
         };
     }
 
-    async getPostListBefore() {
-        const result =  await this.executeQuery(
-            `SELECT
-                 p.*,
-                 u.nickname,
-                 COUNT(DISTINCT c.id) as comment_count
-             FROM ${this.tableName} p
-                      LEFT JOIN users u ON p.user_id = u.id
-                      LEFT JOIN comment c ON p.id = c.post_id AND c.deleteat IS NULL
-             WHERE p.deleteat IS NULL
-             GROUP BY p.id, u.nickname
-             ORDER BY p.createat DESC`
-        );
-        // console.log(result);
-        return Object.values(result).map(post => ({
-            ...post,
-        // date: post.createat = formatDate(post.createat),
-        comment_count: post.comment_count ? Number(post.comment_count) : 0
-        }));
-    }
-
     async createPost(title, content, userId, imageUrl) {
         const result = await this.executeQuery(
             `INSERT INTO ${this.tableName} (title, content, user_id, createat, image)
@@ -136,7 +113,7 @@ class PostModel extends CommonModel {
             [title, content, userId, imageUrl]
         );
 
-        return Number(result.insertId);;
+        return Number(result.insertId);
     }
 
     async getPostByPostId(postId, userId) {

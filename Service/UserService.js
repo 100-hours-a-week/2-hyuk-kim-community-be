@@ -1,7 +1,7 @@
 // const User = require("../Model/user");
 const UserModel = require("../Model/UserModel");
 const userModel = new UserModel();
-const UserErrorCode = require("../common/errors/userErrorCode");
+const UserErrorCode = require("../common/codes/userErrorCode");
 const {uploadImage, getImageUrl} = require("../utils/imageUploader");
 
 /*
