@@ -10,7 +10,7 @@ module.exports.getPostList = async (req) => {
   const offset = (page - 1) * limit;
   const { posts, totalCount } = await postModel.getPostList(offset, limit, userId);
   const hasMore = totalCount > offset + posts.length;
-
+  console.log(posts + " / " + totalCount);
   return {
     posts,
     totalCount,
@@ -79,8 +79,9 @@ module.exports.deletePostByPostId = async (req) => {
 };
 
 module.exports.createComment = async (req) => {
+  console.log(req.body);
   const { postId, content, userId } = req.body;
-  await validateFields(req.body, ["postId", "content", "userId"]);
+  // await validateFields(req.body, ["postId", "content", "userId"]);
   await validatePost(postId);
   return await commentModel.createComment(postId, content, userId);
 };

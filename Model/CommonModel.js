@@ -6,12 +6,11 @@ class CommonModel {
     }
 
     async executeQuery(query, params = []) {
-        console.log(`query : ${query}`);
         let conn;
         try {
             conn = await pool.getConnection();
             const result =  await conn.query(query, params);
-            console.log(`result : ${result}`);
+            // console.log(`result : ${result}`);
             return result;
         } catch (err) {
             throw err;

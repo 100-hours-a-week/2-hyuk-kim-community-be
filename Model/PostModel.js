@@ -1,5 +1,6 @@
 const CommonModel = require('./CommonModel');
 const { formatDate } = require("../utils/dateManager");
+const {post} = require("axios");
 
 class PostModel extends CommonModel {
     constructor() {
@@ -37,23 +38,28 @@ class PostModel extends CommonModel {
         ]);
 
         return {
-            posts: posts.map(post => ({
-                ...post,
-                id: Number(post.id),
-                user_id: Number(post.user_id),
-                count_view: Number(post.count_view),
-                user: {
-                    nickname: post.nickname,
-                    profile: post.profile
-                },
-                countComments: parseInt(post.countComments.toString()),
-                countLike: parseInt(post.countLike.toString()),
-                isLiked: Number(post.isLiked) === 1,  // boolean으로 변환
-                nickname: undefined,
-                profile: undefined
-            })),
+            posts: posts.map(post => {
+                const { countComments, ...postData } = post;
+                return {
+                    post: {
+                        ...postData,
+                        id: Number(post.id),
+                        user_id: Number(post.user_id),
+                        count_view: Number(post.count_view),
+                        user: {
+                            nickname: post.nickname,
+                            profile: post.profile
+                        },
+                        countLike: Number(post.countLike),
+                        isLiked: Boolean(post.isLiked),
+                        nickname: undefined,
+                        profile: undefined,
+                    },
+                    countComments: Number(countComments)
+                };
+            }),
             totalCount: Number(countResult[0].total)
-        }
+        };
     }
 
     async getCommentListByPostId(postId, userId, page, limit) {
