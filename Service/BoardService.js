@@ -3,14 +3,12 @@ const postModel = require("../Model/PostModel");
 const commentModel = require("../Model/CommentModel");
 const {uploadImage} = require("../utils/imageUploader");
 
-// 페이징 추가 필요!
 module.exports.getPostList = async (req) => {
   const userId = req.user?.userId;
   const { page = 1 , limit = 10 } = req.query;
   const offset = (page - 1) * limit;
   const { posts, totalCount } = await postModel.getPostList(offset, limit, userId);
   const hasMore = totalCount > offset + posts.length;
-  console.log(posts + " / " + totalCount);
   return {
     posts,
     totalCount,
