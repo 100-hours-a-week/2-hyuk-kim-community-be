@@ -55,6 +55,8 @@ export const userSchema = {
     updateProfile: Joi.object({
         profileImage: imageRule.optional(),
         nickname: nicknameRule.optional()
+    }).min(1).messages({  // 최소 하나의 필드는 있어야 함
+        'object.min': '수정할 내용을 입력해주세요'
     }),
 
     // 비밀번호 수정 스키마
