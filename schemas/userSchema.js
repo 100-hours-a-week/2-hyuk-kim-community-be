@@ -2,66 +2,68 @@ const Joi = require('joi');
 
 // 공통으로 사용될 기본 규칙들
 const emailRule = Joi.string()
+    .label('이메일')
     .pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)
     .messages({
         'string.pattern.base': '올바른 이메일 주소 형식을 입력해주세요 (예: example@example.com)'
     });
 
 const passwordRule = Joi.string()
+    .label('비밀번호')
     .pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>/?~-]).{8,20}$/)
     .messages({
-        'string.empty': '비밀번호를 입력해주세요',
         'string.pattern.base': '비밀번호는 대소문자, 숫자, 특수문자를 포함한 8~20자여야 합니다'
     });
 
 const passwordConfirmRule = Joi.string()
+    .label('비밀번호 확인')
     .valid(Joi.ref('password'))
     .messages({
-        'any.only': '비밀번호가 일치하지 않습니다',
-        'string.empty': '비밀번호를 한번 더 입력해주세요'
+        'any.only': '비밀번호가 일치하지 않습니다'
     });
 
 const nicknameRule = Joi.string()
+    .label('닉네임')
     .pattern(/^[^\s]{1,10}$/)
     .max(10)
     .messages({
-        'string.empty': '닉네임을 입력해주세요',
         'string.max': '닉네임은 최대 10자까지 작성 가능합니다',
         'string.pattern.base': '띄어쓰기를 없애주세요'
     });
 
 const imageRule = Joi.string()
-    .messages({
-        'string.empty': '프로필 이미지를 선택해주세요'
-    });
+    .label('프로필 이미지');
+
+// 모든 스키마에 공통으로 적용될 메시지
+const commonMessages = {
+    'any.required': '{{#label}}을(를) 입력해주세요',
+    'string.empty': '{{#label}}을(를) 입력해주세요'
+};
 
 exports.userSchema = {
-    // 회원가입 스키마
     register: Joi.object({
         profileImage: imageRule.required(),
         email: emailRule.required(),
         password: passwordRule.required(),
         passwordConfirm: passwordConfirmRule.required(),
         nickname: nicknameRule.required()
-    }),
+    }).messages(commonMessages),
 
-    // 로그인 스키마
     login: Joi.object({
         email: emailRule.required(),
         password: passwordRule.required()
-    }),
+    }).messages(commonMessages),
 
-    // 회원정보 수정 스키마
     updateProfile: Joi.object({
         profileImage: imageRule.optional(),
         nickname: nicknameRule.optional()
-    }).min(1).messages({  // 최소 하나의 필드는 있어야 함
+    }).min(1).messages({
+        ...commonMessages,
         'object.min': '수정할 내용을 입력해주세요'
     }),
 
-    // 비밀번호 수정 스키마
     updatePassword: Joi.object({
         password: passwordRule.required(),
         passwordConfirm: passwordConfirmRule.required()
-    })
+    }).messages(commonMessages)
 };
