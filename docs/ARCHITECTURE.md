@@ -13,6 +13,7 @@
     - multer - 파일 업로드
     - cors - CORS 처리
     - dotenv - 환경 변수 관리
+    - Joi - 요청 검증
 
 - **데이터베이스**
     - MariaDB 10.x
