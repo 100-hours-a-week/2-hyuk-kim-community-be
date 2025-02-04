@@ -30,7 +30,6 @@ module.exports.createPost = async (req) => {
 module.exports.getPostByPostId = async (req) => {
   const userId = req.user?.userId;
   const postId = req.params.postId;
-  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
   return await postModel.getPostByPostId(postId, userId);
 };
@@ -41,7 +40,6 @@ module.exports.getCommentListByPostId = async (req) => {
   const { postId } = req.params;
   const { page = 1, limit = 10 } = req.query;
 
-  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
 
   return await postModel.getCommentListByPostId(postId, userId, page, limit);
@@ -49,27 +47,20 @@ module.exports.getCommentListByPostId = async (req) => {
 
 module.exports.getPostEditByPostId = async (req) => {
   const postId = req.params.postId;
-  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
   return await postModel.getPostEditByPostId(postId);
 };
 
 module.exports.updatePostByPostId = async (req) => {
   console.log(req.body);
-  console.log(`req.params: ${req.params}`);
-  console.log(`req.params: ${req.params.postId}`);
-  console.log(`req.params: ${req.params}`);
   const postId = req.params.postId;
   const { title, content } = req.body.post;
-  await validateFields(req.params, ["postId"]);
-  await validateFields(req.body.post, ["title", "content"]);
   await validatePost(postId);
   return postModel.updatePostByPostId(postId, title, content);
 };
 
 module.exports.deletePostByPostId = async (req) => {
   const postId = req.params.postId;
-  await validateFields(req.params, ["postId"]);
   await validatePost(postId);
   await postModel.deleteById(postId);
   await commentModel.deleteCommentListByPostId(postId);
@@ -77,27 +68,21 @@ module.exports.deletePostByPostId = async (req) => {
 };
 
 module.exports.createComment = async (req) => {
-  console.log(req.body);
   const { postId, content, userId } = req.body;
-  // await validateFields(req.body, ["postId", "content", "userId"]);
   await validatePost(postId);
   return await commentModel.createComment(postId, content, userId);
 };
 
 module.exports.updateCommentByCommentId = async (req) => {
-  console.log('body: ', JSON.stringify(req.body));
   const userId = req.user?.userId;
   const { commentId } = req.params;
   const { content } = req.body; // 작성자 검증 필요
-  await validateFields(req.params, ["commentId"]);
-  // await validateFields(req.body.comment, ["content", "userId"]);
   await validateComment(commentId);
   return await commentModel.updateComment(commentId, content);
 };
 
 module.exports.deleteCommentByCommentId = async (req) => {
   const { commentId } = req.params;
-  await validateFields(req.params, ["commentId"]);
   await validateComment(commentId);
   return await commentModel.deleteComment(commentId);
 };
@@ -112,13 +97,6 @@ module.exports.unLikePost = async (req) => {
   const userId = req.user?.userId;
   const { postId } = req.params;
   return await postModel.unLikePost(postId, userId);
-};
-
-// 필수값 데이터 검증
-const validateFields = (fields, required) => {
-  for (const field of required) {
-    if (!fields[field]) throw BoardErrorCode.createInvalidFormat();
-  }
 };
 
 // 게시글 id 에 맞는 게시글 있는지 검증
