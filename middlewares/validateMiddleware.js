@@ -1,6 +1,6 @@
-import {BadRequestError} from "../common/codes/CustomError";
+const {BadRequestError} = require("../common/codes/CustomError");
 
-export const validateMiddleware = (schema) => {
+exports.validateMiddleware = (schema) => {
     return (req, res, next) => {
         try {
             const { error } = schema.validate(req.body, {

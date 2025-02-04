@@ -1,4 +1,4 @@
-import Joi from 'joi';
+const Joi = require('joi');
 
 // 공통으로 사용될 기본 규칙들
 const emailRule = Joi.string()
@@ -35,7 +35,7 @@ const imageRule = Joi.string()
         'string.empty': '프로필 이미지를 선택해주세요'
     });
 
-export const userSchema = {
+exports.userSchema = {
     // 회원가입 스키마
     register: Joi.object({
         profileImage: imageRule.required(),

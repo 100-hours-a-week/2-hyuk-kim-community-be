@@ -1,4 +1,4 @@
-import Joi from 'joi';
+const Joi = require('joi');
 
 // 게시글 관련 공통 규칙
 const postImageRule = Joi.string()
@@ -27,7 +27,7 @@ const commentContentRule = Joi.string()
         'string.max': '댓글은 최대 100자까지 입력 가능합니다'
     });
 
-export const boardSchema = {
+exports.boardSchema = {
     // 게시글 생성 스키마
     createPost: Joi.object({
         image: postImageRule.optional(),
