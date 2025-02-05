@@ -42,11 +42,10 @@ const commonMessages = {
 
 exports.userSchema = {
     register: Joi.object({
-        profileImage: imageRule.required(),
         email: emailRule.required(),
         password: passwordRule.required(),
-        passwordConfirm: passwordConfirmRule.required(),
-        nickname: nicknameRule.required()
+        nickname: nicknameRule.required(),
+        image: imageRule.required()
     }).messages(commonMessages),
 
     login: Joi.object({
@@ -64,6 +63,5 @@ exports.userSchema = {
 
     updatePassword: Joi.object({
         password: passwordRule.required(),
-        passwordConfirm: passwordConfirmRule.required()
     }).messages(commonMessages)
 };

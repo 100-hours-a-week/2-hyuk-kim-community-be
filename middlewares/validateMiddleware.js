@@ -1,11 +1,17 @@
-const {BadRequestError} = require("../common/codes/CustomError");
+const { BadRequestError } = require("../common/codes/CustomError");
 
 exports.validateMiddleware = (schema) => {
     return (req, res, next) => {
         try {
-            const { error } = schema.validate(req.body, {
-                abortEarly: false, // 모든 에러를 한번에 반환
-                stripUnknown: true // 정의되지 않은 속성 제거
+            // multer로 처리된 파일을 body에 포함
+            const dataToValidate = {
+                ...req.body,
+                ...(req.file && { image: req.file })
+            };
+
+            const { error } = schema.validate(dataToValidate, {
+                abortEarly: false,
+                stripUnknown: true
             });
 
             if (error) {
