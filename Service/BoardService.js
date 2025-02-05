@@ -101,10 +101,10 @@ module.exports.unLikePost = async (req) => {
 
 // 게시글 id 에 맞는 게시글 있는지 검증
 const validatePost = async (postId) => {
-  // const result = await postModel.getPostByPostId(postId);
-  // if (!result) throw BoardErrorCode.createBoardNotFound();
-  // return result;
-  return true;
+  const result = await postModel.getPostByPostId(postId);
+  if (!result) throw BoardErrorCode.createBoardNotFound();
+  return result;
+  // return true;
 };
 
 // 댓글 id 에 맞는 댓글 있는지 검증
@@ -113,3 +113,17 @@ const validateComment = async (commentId) => {
   if (!result) throw BoardErrorCode.createCommentNotFound();
   return result;
 };
+
+
+// 유저의 id를 받지 않기 때문에, 유저 아이디를 받아온 뒤 검증 후 반환은 X 하는 방식으로 수정 필요!!
+// 요청한 유저가 게시글 작성자인지 검증
+// const validatePostOwner = async (userId, post) => {
+//   if(post.getUserId != userId) throw BoardErrorCode.createMismatchUser();
+//   return true;
+// }
+
+// 요청한 유저가 댓글 작성자인지 검증
+// const validateCommentOwner = async (userId, comment) => {
+//   if(comment.getUserId != userId) throw BoardErrorCode.createMismatchUser();
+//   return true;
+// }

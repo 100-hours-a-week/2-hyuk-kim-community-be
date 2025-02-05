@@ -35,15 +35,19 @@ const commonMessages = {
 
 exports.boardSchema = {
     createPost: Joi.object({
-        image: postImageRule.optional(),
-        title: postTitleRule.required(),
-        content: postContentRule.required()
+        post: Joi.object({
+            image: postImageRule.optional(),
+            title: postTitleRule.required(),
+            content: postContentRule.required()
+        }).required()
     }).messages(commonMessages),
 
     updatePost: Joi.object({
-        image: postImageRule.optional(),
-        title: postTitleRule.optional().not(Joi.string().empty()),
-        content: postContentRule.optional().not(Joi.string().empty())
+        post: Joi.object({
+            image: postImageRule.optional(),
+            title: postTitleRule.optional().not(Joi.string().empty()),
+            content: postContentRule.optional().not(Joi.string().empty())
+        }).required()
     }).min(1).messages({
         ...commonMessages,
         'object.min': '수정할 내용을 입력해주세요'
