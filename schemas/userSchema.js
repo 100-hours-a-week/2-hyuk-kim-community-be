@@ -31,7 +31,7 @@ const nicknameRule = Joi.string()
         'string.pattern.base': '띄어쓰기를 없애주세요'
     });
 
-const imageRule = Joi.string()
+const imageRule = Joi.any()
     .label('프로필 이미지');
 
 // 모든 스키마에 공통으로 적용될 메시지
@@ -55,8 +55,8 @@ exports.userSchema = {
     }).messages(commonMessages),
 
     updateProfile: Joi.object({
-        profileImage: imageRule.optional(),
-        nickname: nicknameRule.optional()
+        nickname: nicknameRule.optional(),
+        image: imageRule.optional()
     }).min(1).messages({
         ...commonMessages,
         'object.min': '수정할 내용을 입력해주세요'
