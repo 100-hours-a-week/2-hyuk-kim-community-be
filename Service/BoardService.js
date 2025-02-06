@@ -30,8 +30,7 @@ module.exports.createPost = async (req) => {
 module.exports.getPostByPostId = async (req) => {
   const userId = req.user?.userId;
   const postId = req.params.postId;
-  await validatePost(postId);
-  return await postModel.getPostByPostId(postId, userId);
+  return await validatePost(postId, userId);
 };
 
 // 댓글 페이지네이션
@@ -100,11 +99,10 @@ module.exports.unLikePost = async (req) => {
 };
 
 // 게시글 id 에 맞는 게시글 있는지 검증
-const validatePost = async (postId) => {
-  const result = await postModel.getPostByPostId(postId);
+const validatePost = async (postId, userId) => {
+  const result = await postModel.getPostByPostId(postId, userId);
   if (!result) throw BoardErrorCode.createBoardNotFound();
   return result;
-  // return true;
 };
 
 // 댓글 id 에 맞는 댓글 있는지 검증
