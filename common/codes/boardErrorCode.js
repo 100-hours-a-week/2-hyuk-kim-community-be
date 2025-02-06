@@ -1,4 +1,4 @@
-const { BadRequestError, NotFoundError } = require("./CustomError");
+const { BadRequestError, NotFoundError } = require("../responses/CustomError");
 
 const ErrorMessages = {
   MISMATCH_USER_ID: "작성자가 아닙니다.",

@@ -1,4 +1,4 @@
-const { BadRequestError, ServiceError } = require("./CustomError");
+const { BadRequestError, ServiceError } = require("../responses/CustomError");
 
 const ErrorMessages = {
   STORAGE_TIMEOUT: "이미지 서버 타임아웃",
