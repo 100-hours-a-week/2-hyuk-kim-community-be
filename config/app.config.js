@@ -4,7 +4,7 @@ module.exports = {
     PORT: process.env.PORT || 3001,
     ALLOWED_ORIGINS: process.env.ALLOWED_ORIGINS
         ? process.env.ALLOWED_ORIGINS.split(",")
-        : ["http://localhost:3000", "http://3.39.229.64:3000"], // CORS 허용 도메인
+        : ["http://localhost:3000", "http://community-front-deploy.s3-website.ap-northeast-2.amazonaws.com/posts"], // CORS 허용 도메인
     ALLOWED_METHODS: "GET,HEAD,PUT,PATCH,POST,DELETE", // 허용 HTTP 메서드
     CREDENTIALS_ALLOWED: true, // CORS 인증 허용
     SESSION_SECRET: process.env.SESSION_SECRET || "your-secret-key", // 세션 암호화 키
