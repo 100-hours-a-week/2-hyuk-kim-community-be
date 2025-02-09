@@ -24,14 +24,13 @@ module.exports.logout = async (req) => {};
 
 module.exports.signup = async (req) => {
   console.log(req.body);
-  const { email, password, nickname } = req.body;
-  console.log(`email: ${email} password: ${password}`);
+  const { email, password, nickname, image } = req.body;
+  console.log(`email: ${email} password: ${password} image: ${image}`);
   await validateNewEmail(email);
 
+  // const imageUrl = await uploadImage(req.file, "profile");
 
-  const imageUrl = await uploadImage(req.file, "profile");
-
-  if(!await userModel.signup(email, password, nickname, imageUrl)) {
+  if(!await userModel.signup(email, password, nickname, image)) {
       throw UserErrorCode.createUnexpectedError();
   }
   return {}// TF 검증 필요!

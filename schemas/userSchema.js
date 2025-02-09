@@ -45,7 +45,7 @@ exports.userSchema = {
         email: emailRule.required(),
         password: passwordRule.required(),
         nickname: nicknameRule.required(),
-        image: imageRule.required()
+        // image: imageRule.required()
     }).messages(commonMessages),
 
     login: Joi.object({

@@ -1,4 +1,4 @@
-const config = require("./config/config"); // 이 변수를 통해 설정 관련 상수를 한 곳에서 관리합니다.
+const config = require("./config/app.config"); // 이 변수를 통해 설정 관련 상수를 한 곳에서 관리합니다.
 const port = config.PORT;
 
 // CORS 설정
@@ -16,6 +16,7 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const userRouter = require("./Route/UserRoute");
 const boardRouter = require("./Route/BoardRoute");
+const imageRouter = require("./Route/ImageRoute");
 
 // CORS 미들웨어 사용
 app.use(cors(corsOptions));
@@ -37,6 +38,7 @@ app.use(
 
 app.use(express.json({ limit: '15mb' }));
 app.use(loggingMiddleware);
+app.use("/api", imageRouter);
 app.use("/api", boardRouter);
 app.use("/api", userRouter);
 app.use(errorMiddleware);

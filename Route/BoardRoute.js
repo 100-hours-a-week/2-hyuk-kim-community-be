@@ -1,11 +1,11 @@
-const { boardSchema } = require('../schemas/boardSchema');
-const { validateMiddleware } = require('../middlewares/validateMiddleware');
-
 const express = require("express");
 const boardRoute = express.Router();
-const boardController = require("./../Controller/BoardController.js");
 const authMiddleware = require("./../middlewares/authMiddleware.js");
+const boardController = require("./../Controller/BoardController.js");
 const { upload } = require('../middlewares/imageMiddleware');
+
+const { boardSchema } = require('../schemas/boardSchema');
+const { validateMiddleware } = require('../middlewares/validateMiddleware');
 
 //authMiddleware,
 boardRoute.get("/posts", authMiddleware, boardController.getPostList); // O
