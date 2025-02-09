@@ -2,6 +2,7 @@
 
 ### Cofiguration ###
 .env.develop
+.env.product
 
 ### Git ###
 *.orig

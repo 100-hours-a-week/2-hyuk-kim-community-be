@@ -61,7 +61,8 @@ module.exports.deletePostByPostId = async (req) => {
 };
 
 module.exports.createComment = async (req) => {
-  const { postId, content, userId } = req.body;
+  const userId = req.user?.userId;
+  const { postId, content } = req.body;
   await validatePost(postId);
   return await commentModel.createComment(postId, content, userId);
 };
