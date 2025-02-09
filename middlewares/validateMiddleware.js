@@ -1,4 +1,4 @@
-const { BadRequestError } = require("../common/codes/CustomError");
+const { BadRequestError } = require("../common/responses/CustomError");
 
 exports.validateMiddleware = (schema) => {
     return (req, res, next) => {

@@ -1,110 +1,85 @@
-const { S3Client, PutObjectCommand, DeleteObjectCommand } = require('@aws-sdk/client-s3');
+const { PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const { v4: uuidv4 } = require('uuid');
-const {ImageErrorCode} = require("../common/codes/imageErrorCode");
+const { ImageErrorCode } = require('../common/codes/imageErrorCode');
+const { s3Client, s3BucketName, CDNDeployName } = require('../utils/awsClients');
 
-// AWS S3 클라이언트 설정
-const s3Client = new S3Client({
-    region: process.env.AWS_REGION,
-    credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    }
-});
-
-// 허용된 이미지 타입 정의
+// 상수 정의
 const ALLOWED_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif'];
+const URL_EXPIRATION = 3600; // 1시간
 
-// 이미지 업로드 함수
-module.exports.uploadImage = async (file, type) => {
-    try {
-        // 파일이 없는 경우 null 반환
-        console.log(`image uploader on!!`);
-        if (!file) {
-            console.error(`notfound image`);
-            return null;
+class ImageUploader {
+    constructor() {
+        this.s3BucketName = s3BucketName;
+        this.cdnDomain = CDNDeployName;
+    }
+
+     // presigned URL 생성
+    async generatePreSignedUrl(fileType, type) {
+        try {
+            this.validateImageMetadata(fileType);
+
+            // 파일명 생성
+            const fileExtension = fileType.split('/')[1];
+            const fileName = `image/${type}/${uuidv4()}.${fileExtension}`;
+
+            // presigned URL 생성을 위한 커맨드
+            const command = new PutObjectCommand({
+                Bucket: this.s3BucketName,
+                Key: fileName,
+                ContentType: fileType
+            });
+
+            // presigned URL 생성
+            const preSignedUrl = await getSignedUrl(s3Client, command, {
+                expiresIn: URL_EXPIRATION
+            });
+
+            // CDN URL 생성
+            const cdnUrl = `https://${this.cdnDomain}/${fileName}`;
+
+            return {
+                preSignedUrl: preSignedUrl,
+                imageUrl: cdnUrl,
+                key: fileName
+            };
+        } catch (error) {
+            console.error('Presigned URL generation failed:', error);
+            this.handleError(error);
+        }
+    }
+
+    validateImageMetadata(fileType) {
+        if (!fileType) {
+            throw ImageErrorCode.createInvalidType();
         }
 
-        // 파일 타입 검증
-        if (!ALLOWED_MIME_TYPES.includes(file.mimetype)) {
-            console.error(`image type error!`);
-            throw ImageErrorCode.createInvalidFileType();
-        }
-        console.log(`image type good!!`);
-        // 파일 이름 생성 (충돌 방지를 위해 UUID 사용)
-        const fileExtension = file.originalname.split('.').pop();
-        const fileName = `image/${type}/${uuidv4()}.${fileExtension}`;
-
-        // S3 업로드 커맨드 생성
-        const uploadCommand = new PutObjectCommand({
-            Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: fileName,
-            Body: file.buffer,
-            ContentType: file.mimetype,
-        });
-
-        console.log(`image upload start!!`);
-        // S3에 파일 업로드
-        await s3Client.send(uploadCommand);
-
-        // 업로드된 파일의 URL 생성
-        const fileUrl = `https://${process.env.AWS_S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`;
-        console.log(`fileUrl ${fileUrl}`);
-        return fileUrl;
-
-    } catch (error) {
-        // AWS S3 관련 에러 처리
-        console.error(error);
-        if (error.name === 'NetworkingError') {
-            throw ImageErrorCode.createStorageConnectionFailed();
-        }
-        if (error.name === 'TimeoutError') {
-            throw ImageErrorCode.createStorageTimeout();
-        }
-        if (error.name === 'NoSuchBucket') {
-            throw ImageErrorCode.createStorageError('Bucket not found');
-        }
-        if (error.name === 'AccessDenied') {
-            throw ImageErrorCode.createStorageError('Access denied to S3 bucket');
+        if (!ALLOWED_MIME_TYPES.includes(fileType)) {
+            throw ImageErrorCode.createInvalidFormat();
         }
 
-        // 기타 에러 처리
+    }
+
+    /**
+     * 에러 핸들링
+     */
+    handleError(error) {
+        console.error('S3 operation failed:', error);
+
+        const errorMap = {
+            NetworkingError: ImageErrorCode.createStorageConnectionFailed,
+            TimeoutError: ImageErrorCode.createStorageTimeout,
+        };
+
+        const errorHandler = errorMap[error.name];
+        if (errorHandler) {
+            throw errorHandler();
+        }
+
         throw ImageErrorCode.createUploadFailed(error.message);
     }
+}
+
+module.exports = {
+    ImageUploader
 };
-
-// 이미지 삭제 함수
-module.exports.deleteImage = async (imageUrl) => {
-    try {
-        // URL에서 키 추출
-        const key = new URL(imageUrl).pathname.slice(1);
-
-        const deleteCommand = new DeleteObjectCommand({
-            Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: key
-        });
-
-        await s3Client.send(deleteCommand);
-        return true;
-    } catch (error) {
-        throw ImageErrorCode.createDeleteFailed(error.message);
-    }
-};
-
-// 환경 변수 검증 함수
-const validateEnvironmentVariables = () => {
-    const requiredEnvVars = [
-        'AWS_ACCESS_KEY_ID',
-        'AWS_SECRET_ACCESS_KEY',
-        'AWS_REGION',
-        'AWS_S3_BUCKET_NAME'
-    ];
-
-    for (const envVar of requiredEnvVars) {
-        if (!process.env[envVar]) {
-            throw new Error(`Missing required environment variable: ${envVar}`);
-        }
-    }
-};
-
-// 초기화 시 환경 변수 검증
-validateEnvironmentVariables();

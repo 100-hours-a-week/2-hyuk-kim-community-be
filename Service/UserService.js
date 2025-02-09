@@ -24,21 +24,20 @@ module.exports.logout = async (req) => {};
 
 module.exports.signup = async (req) => {
   console.log(req.body);
-  const { email, password, nickname } = req.body;
-  console.log(`email: ${email} password: ${password}`);
+  const { email, password, nickname, image } = req.body;
+  console.log(`email: ${email} password: ${password} image: ${image}`);
   await validateNewEmail(email);
 
+  // const imageUrl = await uploadImage(req.file, "profile");
 
-  const imageUrl = await uploadImage(req.file, "profile");
-
-  if(!await userModel.signup(email, password, nickname, imageUrl)) {
+  if(!await userModel.signup(email, password, nickname, image)) {
       throw UserErrorCode.createUnexpectedError();
   }
   return {}// TF 검증 필요!
 };
 
 module.exports.signout = async (req) => {
-  const { userId } = req.body;
+  const { userId } = req.user?.userId;
   await validateId(userId);
   return userModel.signout(userId);
 };
@@ -53,17 +52,14 @@ module.exports.getProfile = async (req) => {
 
 module.exports.updateProfile = async (req) => {
   const userId  = req.user?.userId;
-  const { nickname } = req.body;
+  const { nickname, image } = req.body;
   const updates = {};
-  const image = req.file;
   if (nickname !== "") {
     updates.nickname = nickname;
   }
-
   if (image) {
-    updates.profile = await uploadImage(req.file, "profile");
+    updates.profile = image
   }
-
   await userModel.updateProfile(userId, updates);
   return {profile: updates.profile};
 };

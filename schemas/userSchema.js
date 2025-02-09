@@ -45,7 +45,7 @@ exports.userSchema = {
         email: emailRule.required(),
         password: passwordRule.required(),
         nickname: nicknameRule.required(),
-        image: imageRule.required()
+        // image: imageRule.required()
     }).messages(commonMessages),
 
     login: Joi.object({
@@ -55,11 +55,12 @@ exports.userSchema = {
 
     updateProfile: Joi.object({
         nickname: nicknameRule.optional(),
-        image: imageRule.optional()
-    }).min(1).messages({
-        ...commonMessages,
-        'object.min': '수정할 내용을 입력해주세요'
     }),
+    //     image: imageRule.optional()
+    // }).min(1).messages({
+    //     ...commonMessages,
+    //     'object.min': '수정할 내용을 입력해주세요'
+    // }),
 
     updatePassword: Joi.object({
         password: passwordRule.required(),

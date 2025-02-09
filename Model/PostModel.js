@@ -13,6 +13,7 @@ class PostModel extends CommonModel {
                         p.*,
                         u.nickname,
                         u.profile,
+                        u.deleteat as deletedUser,
                         CAST(COUNT(DISTINCT c.id) AS UNSIGNED) as countComments,
                         CAST(COUNT(DISTINCT l2.id) AS UNSIGNED) as countLike,
                         l1.user_id IS NOT NULL as isLiked
@@ -46,7 +47,8 @@ class PostModel extends CommonModel {
                         count_view: Number(post.count_view),
                         user: {
                             nickname: post.nickname,
-                            profile: post.profile
+                            profile: post.profile,
+                            deleteat: post.deletedUser,
                         },
                         countLike: Number(post.countLike),
                         isLiked: Boolean(post.isLiked),
@@ -134,6 +136,7 @@ class PostModel extends CommonModel {
             p.count_view as countView,
             u.nickname,
             u.profile,
+            u.deleteat as deletedUser,
             CASE WHEN p.user_id = ? THEN TRUE ELSE FALSE END as isMyPost,
             CAST((SELECT COUNT(*) FROM likes WHERE post_id = p.id) AS UNSIGNED) as countLike, 
             ${userId ?
@@ -151,7 +154,8 @@ class PostModel extends CommonModel {
                         'date', DATE_FORMAT(c.createat, '%Y.%m.%d %H:%i'),
                         'user', JSON_OBJECT(
                             'nickname', cu.nickname,
-                            'profile', cu.profile
+                            'profile', cu.profile,
+                            'deleteat', cu.deleteat
                         ),
                         'isAuthorComments', CASE WHEN c.user_id = p.user_id THEN TRUE ELSE FALSE END,
                         'isMyComment', CASE WHEN c.user_id = ? THEN TRUE ELSE FALSE END
@@ -173,11 +177,13 @@ class PostModel extends CommonModel {
         post.commentList = post.commentList || [];
         post.user = {
             nickname: post.nickname,
-            profile: post.profile
+            profile: post.profile,
+            deleteat: post.deletedUser
         };
 
         delete post.nickname;
         delete post.profile;
+        delete post.deletedUser;
 
         // BigInt를 Number로 변환 (필요한 경우를 위한 안전장치)
         if (typeof post.countLike === 'bigint') {
@@ -197,12 +203,13 @@ class PostModel extends CommonModel {
         return rows[0];
     }
 
-    async updatePostByPostId(postId, title, content) {
+    async updatePostByPostId(postId, title, content, image) {
+        console.log(image)
         const result = await this.executeQuery(
             `UPDATE ${this.tableName} 
-            SET title = ?, content = ?, updateat = NOW() 
+            SET title = ?, content = ?, image = ?, updateat = NOW() 
             WHERE id = ?`,
-            [title, content, postId]
+            [title, content, image, postId]
         );
         return result.affectedRows;
     }
