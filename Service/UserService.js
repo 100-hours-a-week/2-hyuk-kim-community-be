@@ -37,7 +37,7 @@ module.exports.signup = async (req) => {
 };
 
 module.exports.signout = async (req) => {
-  const { userId } = req.body;
+  const { userId } = req.user?.userId;
   await validateId(userId);
   return userModel.signout(userId);
 };
@@ -52,17 +52,14 @@ module.exports.getProfile = async (req) => {
 
 module.exports.updateProfile = async (req) => {
   const userId  = req.user?.userId;
-  const { nickname } = req.body;
+  const { nickname, image } = req.body;
   const updates = {};
-  const image = req.file;
   if (nickname !== "") {
     updates.nickname = nickname;
   }
-
   if (image) {
-    updates.profile = await uploadImage(req.file, "profile");
+    updates.profile = image
   }
-
   await userModel.updateProfile(userId, updates);
   return {profile: updates.profile};
 };
