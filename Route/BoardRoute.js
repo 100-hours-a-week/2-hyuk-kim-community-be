@@ -15,7 +15,7 @@ boardRoute.post("/posts", validateMiddleware(boardSchema.createPost), authMiddle
 boardRoute.patch("/posts/:postId", validateMiddleware(boardSchema.updatePost), authMiddleware, boardController.updatePostByPostId);
 boardRoute.delete("/posts/:postId", authMiddleware, boardController.deletePostByPostId);
 
-boardRoute.post("/comments", authMiddleware, validateMiddleware(boardSchema.comment), boardController.createComment);
+boardRoute.post("/comments", validateMiddleware(boardSchema.comment), authMiddleware, boardController.createComment);
 boardRoute.patch(
   "/comments/:commentId",
   authMiddleware,
