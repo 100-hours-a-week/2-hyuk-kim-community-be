@@ -2,7 +2,6 @@ const express = require("express");
 const boardRoute = express.Router();
 const authMiddleware = require("./../middlewares/authMiddleware.js");
 const boardController = require("./../Controller/BoardController.js");
-const { upload } = require('../middlewares/imageMiddleware');
 
 const { boardSchema } = require('../schemas/boardSchema');
 const { validateMiddleware } = require('../middlewares/validateMiddleware');
@@ -12,8 +11,8 @@ boardRoute.get("/posts", authMiddleware, boardController.getPostList); // O
 boardRoute.get("/posts/:postId", authMiddleware, boardController.getPostByPostId); // O
 boardRoute.get("/posts/:postId/edit", authMiddleware, boardController.getPostEditByPostId); // O
 
-boardRoute.post("/posts", upload.single('image'), validateMiddleware(boardSchema.createPost), authMiddleware, boardController.createPost);
-boardRoute.patch("/posts/:postId", upload.single('image'), validateMiddleware(boardSchema.updatePost), authMiddleware, boardController.updatePostByPostId);
+boardRoute.post("/posts", validateMiddleware(boardSchema.createPost), authMiddleware, boardController.createPost);
+boardRoute.patch("/posts/:postId", validateMiddleware(boardSchema.updatePost), authMiddleware, boardController.updatePostByPostId);
 boardRoute.delete("/posts/:postId", authMiddleware, boardController.deletePostByPostId);
 
 boardRoute.post("/comments", authMiddleware, validateMiddleware(boardSchema.comment), boardController.createComment);

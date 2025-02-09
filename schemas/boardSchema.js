@@ -39,7 +39,7 @@ exports.boardSchema = {
             image: postImageRule.optional(),
             title: postTitleRule.required(),
             content: postContentRule.required()
-        }).required()
+        })
     }).messages(commonMessages),
 
     updatePost: Joi.object({

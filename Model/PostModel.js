@@ -203,12 +203,13 @@ class PostModel extends CommonModel {
         return rows[0];
     }
 
-    async updatePostByPostId(postId, title, content) {
+    async updatePostByPostId(postId, title, content, image) {
+        console.log(image)
         const result = await this.executeQuery(
             `UPDATE ${this.tableName} 
-            SET title = ?, content = ?, updateat = NOW() 
+            SET title = ?, content = ?, image = ?, updateat = NOW() 
             WHERE id = ?`,
-            [title, content, postId]
+            [title, content, image, postId]
         );
         return result.affectedRows;
     }

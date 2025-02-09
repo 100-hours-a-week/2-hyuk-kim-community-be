@@ -18,13 +18,8 @@ module.exports.getPostList = async (req) => {
 
 module.exports.createPost = async (req) => {
   const userId  = req.user?.userId;
-  const { title, content } = req.body.post;
-  let imageUrl;
-  if (req.file) {
-    imageUrl = await uploadImage(req.file, "board");
-  }
-  console.log(`imageUrl: ${imageUrl}`);
-  return postModel.createPost(title, content, userId, imageUrl);
+  const { title, content, image } = req.body.post;
+  return postModel.createPost(title, content, userId, image);
 };
 
 module.exports.getPostByPostId = async (req) => {
@@ -51,11 +46,10 @@ module.exports.getPostEditByPostId = async (req) => {
 };
 
 module.exports.updatePostByPostId = async (req) => {
-  console.log(req.body);
   const postId = req.params.postId;
-  const { title, content } = req.body.post;
+  const { title, content, image } = req.body.post;
   await validatePost(postId);
-  return postModel.updatePostByPostId(postId, title, content);
+  return postModel.updatePostByPostId(postId, title, content, image);
 };
 
 module.exports.deletePostByPostId = async (req) => {
