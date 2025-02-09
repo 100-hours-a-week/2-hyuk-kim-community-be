@@ -8,7 +8,7 @@ const postImageRule = Joi.string()
 
 const postTitleRule = Joi.string()
     .label('제목')
-    .max(20)
+    .max(26)
     .messages({
         'string.max': '제목은 최대 20자까지 입력 가능합니다'
     });
