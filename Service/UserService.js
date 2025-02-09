@@ -37,7 +37,7 @@ module.exports.signup = async (req) => {
 };
 
 module.exports.signout = async (req) => {
-  const { userId } = req.user?.userId;
+  const userId = req.user?.userId;
   await validateId(userId);
   return userModel.signout(userId);
 };
