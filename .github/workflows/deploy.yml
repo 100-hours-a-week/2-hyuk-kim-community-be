@@ -63,9 +63,9 @@ jobs:
             docker ps
             
             ./blue-green-deploy.sh || {
-            echo "Deployment failed. Checking container logs..."
-            CONTAINER_ID=$(docker ps -lq)
-            echo "Latest container logs:"
-            docker logs $CONTAINER_ID
-            exit 1
-          }
+              echo "Deployment failed. Checking container logs..."
+              CONTAINER_ID=$(docker ps -lq)
+              echo "Latest container logs:"
+              docker logs $CONTAINER_ID
+              exit 1
+            }
