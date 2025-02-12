@@ -53,6 +53,13 @@ jobs:
             export ECR_REPOSITORY=community-server
             export IMAGE_TAG=${{ github.sha }}
             
+            # 데이터베이스 환경변수 설정
+            export DB_HOST=${{ secrets.DB_HOST }}
+            export DB_USER=${{ secrets.DB_USER }}
+            export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            export DB_NAME=${{ secrets.DB_NAME }}
+            export DB_PORT=${{ secrets.DB_PORT }}
+            
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
             
             cd ~/app
