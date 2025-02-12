@@ -56,4 +56,5 @@ jobs:
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin $ECR_REGISTRY
             
             cd ~/app
+            chmod +x ./blue-green-deploy.sh
             ./blue-green-deploy.sh
