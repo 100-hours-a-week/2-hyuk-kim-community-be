@@ -54,10 +54,16 @@ async function testConnection() {
         console.log('Database connection test successful:', rows);
         return true;
     } catch (err) {
-        console.error('Database connection test failed:', err);
-        throw err; // 연결 실패 시 에러를 상위로 전파
+        console.error('Database connection test failed:', {
+            message: err.message,
+            code: err.code,
+            errno: err.errno,
+            sqlState: err.sqlState,
+            stack: err.stack
+        });
+        throw err;
     } finally {
-        if (conn) conn.release();
+        if (conn) await conn.release();
     }
 }
 

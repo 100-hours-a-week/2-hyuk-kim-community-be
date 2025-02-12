@@ -54,6 +54,8 @@ jobs:
             export IMAGE_TAG=${{ github.sha }}
             
             # 데이터베이스 환경변수 설정
+            export NODE_ENV=production
+            export DB_CONNECTION_LIMIT=10
             export DB_HOST=${{ secrets.DB_HOST }}
             export DB_USER=${{ secrets.DB_USER }}
             export DB_PASSWORD=${{ secrets.DB_PASSWORD }}
