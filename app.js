@@ -36,6 +36,11 @@ app.use(
   }),
 );
 
+// 헬스 체크를 위한 API 추가
+app.get('/health', (req, res) => {
+    res.status(200).send('ok');
+});
+
 app.use(express.json({ limit: '15mb' }));
 app.use(loggingMiddleware);
 app.use("/api", imageRouter);
