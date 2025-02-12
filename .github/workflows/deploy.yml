@@ -57,4 +57,15 @@ jobs:
             
             cd ~/app
             chmod +x ./blue-green-deploy.sh
-            ./blue-green-deploy.sh
+            
+            # 디버깅을 위한 추가 명령어들
+            echo "Current running containers:"
+            docker ps
+            
+            ./blue-green-deploy.sh || {
+            echo "Deployment failed. Checking container logs..."
+            CONTAINER_ID=$(docker ps -lq)
+            echo "Latest container logs:"
+            docker logs $CONTAINER_ID
+            exit 1
+          }
