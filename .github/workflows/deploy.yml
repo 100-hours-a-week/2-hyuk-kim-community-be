@@ -45,6 +45,10 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           debug: true  # 디버깅 정보 출력
           script: |
+            aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws configure set region ap-northeast-2
+            
             export ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
             export ECR_REPOSITORY=community-server
             export IMAGE_TAG=${{ github.sha }}
